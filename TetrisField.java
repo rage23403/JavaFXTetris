@@ -211,15 +211,15 @@ public class TetrisField
         }
         for(int i = fieldBorder.getTop(); i < fieldBorder.getTop()+linesDone; i++){
             for(int j = 0; j < fieldBorder.getLeft(); j++){
-                field[i][j] = '□';//fill border
+                field[i][j] = ',';//fill border
             }
             field[i][fieldBorder.getLeft()] = 'X';
             for(int j = fieldBorder.getLeft()+1; j < field[0].length-fieldBorder.getRight()-2; j++){
-                field[i][j] = '□';//fill columns
+                field[i][j] = ',';//fill columns
             }
             field[i][field[0].length-fieldBorder.getRight()-2] = 'X';
             for(int j = field[0].length-fieldBorder.getRight()-1; j < field[0].length-1; j++){
-                field[i][j] = '□';//fill border
+                field[i][j] = ',';//fill border
             }
             field[i][field[0].length-1] = '\n';
         }
@@ -236,7 +236,7 @@ public class TetrisField
         p.y = piece.y + y;
         for(int i = 0; i < p.size(); i++){
             for(int j = 0; j < p.size(); j++){
-                if(p.piece[i][j] != ' ' && field[p.y+fieldBorder.getLeft()+i][p.x+fieldBorder.getTop()+j] != '□'){
+                if(p.piece[i][j] != ' ' && field[p.y+fieldBorder.getLeft()+i][p.x+fieldBorder.getTop()+j] != ','){
                     return false;
                 }
             }
