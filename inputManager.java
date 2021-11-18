@@ -10,10 +10,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
- * Write a description of JavaFX class inputManager here.
+ * LAUNCH THIS APPLICATION TO RUN PROGRAM
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Circle Onyx
+ * @version 1.1
  */
 public class inputManager extends Application
 {
@@ -28,20 +28,20 @@ public class inputManager extends Application
         Game.gameThread.start();
         scene.setOnKeyPressed(event -> {
                 switch(event.getCode()){
-                    case RIGHT: Game.right = true;
-                    case LEFT: Game.left = true;
-                    case DOWN: Game.down = true;
-                    case X: Game.ror = true;
-                    case Z: Game.rol = true;
+                    case RIGHT: Game.right = true;break;
+                    case LEFT: Game.left = true;break;
+                    case DOWN: Game.down = true;break;
+                    case X: Game.ror = true;break;
+                    case Z: Game.rol = true;break;
                 }
             });
         scene.setOnKeyReleased(event -> {
                 switch(event.getCode()){
-                    case RIGHT: Game.right = false;
-                    case LEFT: Game.left = false;
-                    case DOWN: Game.down = false;
-                    case X: Game.ror = false;
-                    case Z: Game.rol = false;
+                    case RIGHT: Game.right = false;break;
+                    case LEFT: Game.left = false;break;
+                    case DOWN: Game.down = false;break;
+                    case X: Game.ror = false;break;
+                    case Z: Game.rol = false;break;
                 } 
                 Game.held = false;
             });
