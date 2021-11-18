@@ -66,7 +66,7 @@ public class TetrisPiece
                 if(p[i][j] != ' '){
                     System.out.print(p[i][j]);
                 }
-                else{System.out.print('□');}
+                else{System.out.print(',');}
             }
             System.out.println();
         }
