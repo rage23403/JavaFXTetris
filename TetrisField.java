@@ -25,37 +25,37 @@ public class TetrisField
         field = new char[rows+fieldBorder.getBottom()+fieldBorder.getTop()+1][columns+fieldBorder.getLeft()+fieldBorder.getRight()+3];
         for(int i = 0; i < fieldBorder.getTop(); i++){
             for(int j = 0; j < field[0].length-1; j++){
-                field[i][j] = '□';
+                field[i][j] = ',';
             }
             field[i][field[0].length-1] = '\n';
         }
         for(int i = fieldBorder.getTop(); i < field.length-fieldBorder.getBottom()-1; i++){
             for(int j = 0; j < fieldBorder.getLeft(); j++){
-                field[i][j] = '□';
+                field[i][j] = ',';
             }
             field[i][fieldBorder.getLeft()] = 'X';
             for(int j = fieldBorder.getLeft()+1; j < field[0].length-fieldBorder.getRight()-2; j++){
-                field[i][j] = '□';
+                field[i][j] = ',';
             }
             field[i][field[0].length-fieldBorder.getRight()-2] = 'X';
             for(int j = field[0].length-fieldBorder.getRight()-1; j < field[0].length-1; j++){
-                field[i][j] = '□';
+                field[i][j] = ',';
             }
             field[i][field[0].length-1] = '\n';
         }
         for(int j = 0; j < fieldBorder.getLeft(); j++){
-            field[field.length-fieldBorder.getBottom()-1][j] = '□';
+            field[field.length-fieldBorder.getBottom()-1][j] = ',';
         }
         for(int j = fieldBorder.getLeft(); j < field[0].length-fieldBorder.getRight(); j++){
             field[field.length-fieldBorder.getBottom()-1][j] = 'X';
         }
         for(int j = field[0].length-fieldBorder.getRight()-1; j < field[0].length; j++){
-            field[field.length-fieldBorder.getBottom()-1][j] = '□';
+            field[field.length-fieldBorder.getBottom()-1][j] = ',';
         }
         field[field.length-fieldBorder.getBottom()-1][field[0].length-1] = '\n';
         for(int i = field.length-fieldBorder.getBottom(); i < field.length; i++){
             for(int j = 0; j < field[0].length; j++){
-                field[i][j] = '□';
+                field[i][j] = ',';
             }
             field[i][field[0].length-1] = '\n';
         }
@@ -73,7 +73,7 @@ public class TetrisField
         else{
             for(int i = 0; i < s.length; i++){
                 for(int j = 0; j < s[i].length(); j++){
-                    nextPiece[i][j] = s[i].charAt(j) == ' ' ? '□' : 'X';
+                    nextPiece[i][j] = s[i].charAt(j) == ' ' ? ',' : 'X';
                 }
             }
             for(int i = 2; i < s.length-2; i++){
