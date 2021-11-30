@@ -1,10 +1,14 @@
 
 import java.util.Arrays;
 /**
- * Write a description of class TetrisField here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * Class containing the Tetris Field with
+ * Border size = border
+ * tetris field size = rows x columns
+ * next area size = piece max size + 4
+ * 
+ * 
+ * @author Circle Onyx
+ * @version 1.1
  */
 public class TetrisField
 {
@@ -143,25 +147,6 @@ public class TetrisField
                 if(piece.piece[i][j] == 'X'){
                     field[piece.y+fieldBorder.getLeft()+i][piece.x+fieldBorder.getTop()+j] = piece.piece[i][j];
                 }
-            }
-        }
-        if(piece.TPiece){
-            int corners = 0;
-            Game.TSpinCheck1.x = piece.x;
-            Game.TSpinCheck2.x = piece.x;
-            Game.TSpinCheck3.x = piece.x;
-            Game.TSpinCheck4.x = piece.x;
-            Game.TSpinCheck1.y = piece.y;
-            Game.TSpinCheck2.y = piece.y;
-            Game.TSpinCheck3.y = piece.y;
-            Game.TSpinCheck4.y = piece.y;
-            corners += IsValidMove(Game.TSpinCheck1,0,0) ? 0 : 1;
-            corners += IsValidMove(Game.TSpinCheck2,0,0) ? 0 : 1;
-            corners += IsValidMove(Game.TSpinCheck3,0,0) ? 0 : 1;
-            corners += IsValidMove(Game.TSpinCheck4,0,0) ? 0 : 1;
-            
-            if(corners > 2){
-                TetrisScore.tSpinBonus = true;
             }
         }
         PrintField(null);

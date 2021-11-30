@@ -12,15 +12,16 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
- * Write a description of JavaFX class inputManager here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * Contains all of the code for the UI and collects user inputs.
+ * 
+ * @author Circle Onyx
+ * @version 1.1
  */
 public class inputManager extends Application
 {
     public static Label currentScore;
     public static Label highScore;
+    public static Label bonusText;
     public static Thread changeLabelText;
     public static Task<Void> task;
     public static boolean b = false;
@@ -34,11 +35,13 @@ public class inputManager extends Application
         stage.setScene(scene);
         currentScore = new Label("Current Score: 0");
         highScore = new Label("High Score: ");
+        bonusText = new Label();
         Button b = new Button("reset");
         b.setFocusTraversable(false);
         pane.add(currentScore,0,1);
         pane.add(highScore,0,2);
         pane.add(b,0,0);
+        pane.add(bonusText,0,3);
         Game.gameThread.start();
 
         scene.setOnKeyPressed(event -> {
@@ -72,6 +75,14 @@ public class inputManager extends Application
 
     public static void Main(String[] args){
         launch(args);
+    }
+    
+    public static void SetBonusText(String s){
+        Platform.runLater(new Runnable(){
+                        public void run(){
+                            bonusText.setText(s);
+                        }
+                    });
     }
 
     public static void SetScoreText(String s){

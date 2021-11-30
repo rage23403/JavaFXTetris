@@ -1,9 +1,9 @@
 import java.util.Random;
 /**
- * Write a description of class Game here.
+ * Class containing game loop
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Circle Onyx
+ * @version 1.1
  */
 public class Game
 {
@@ -38,7 +38,10 @@ public class Game
      * used for debugging in BlueJ
      */
     public static void Main(String[] args){
-        System.gc();
+        playArea = new TetrisField(12, 10, new Insets(3), NEXT);
+        TSpinCheck1.x = 9;
+        TSpinCheck1.y = 10;
+        playArea.PrintField(TSpinCheck1);
     }
 
     public static void GameLoop(){
@@ -85,6 +88,7 @@ public class Game
                     playArea.BreakLines(i);
                     TetrisScore.scorePoints(i,1);
                 }
+                else{inputManager.SetBonusText("");}
                 current = next;
                 GenerateNext();
             }
@@ -129,6 +133,7 @@ public class Game
         t.ROL();
         if(!playArea.IsValidMove(t,0,0)){
             t.ROR();
+            TetrisScore.tSpinBonus = false;
             return false;
         }
         return true;
@@ -138,6 +143,7 @@ public class Game
         t.ROR();
         if(!playArea.IsValidMove(t,0,0)){
             t.ROL();
+            TetrisScore.tSpinBonus = false;
             return false;
         }
         return true;
@@ -219,4 +225,20 @@ public class Game
             "  X",
             "   ",
             "   "});
+    static TetrisPiece TOrientationUp = new TetrisPiece(new String[]{
+            " X ",
+            "XXX",
+            "   "});
+    static TetrisPiece TOrientationLeft = new TetrisPiece(new String[]{
+            " X ",
+            "XX ",
+            " X "});
+    static TetrisPiece TOrientationRight = new TetrisPiece(new String[]{
+            " X ",
+            " XX",
+            " X "});
+    static TetrisPiece TOrientationDown = new TetrisPiece(new String[]{
+            "   ",
+            "XXX",
+            " X "});
 }

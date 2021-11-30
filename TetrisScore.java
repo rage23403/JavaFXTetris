@@ -1,9 +1,9 @@
 
 /**
- * Write a description of class TetrisScore here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * Tracks the current score, high score, and whether there's a t-spin or not.
+ * 
+ * @author Circle Onyx
+ * @version 1.1
  */
 public class TetrisScore
 {
@@ -11,20 +11,27 @@ public class TetrisScore
     private static int hScore = 10000;
     public static boolean tSpinBonus = false;
     public static void scorePoints(int lines, int level){
+        String s;
         int temp = 0;
         switch(lines){
-            case 1: temp = 100; break;
-            case 2: temp = 250; break;
-            case 3: temp = 400; break;
-            case 4: temp = 1000; break;
-            default: temp = 1; break;
+            case 1: temp = 100; s = "Single"; break;
+            case 2: temp = 250; s = "Double"; break;
+            case 3: temp = 400; s = "Triple"; break;
+            case 4: temp = 1000; s = "TETRIS!"; break;
+            default: temp = 1; s = "FAKER!!"; break;
         }
         if(level < 0){
             level = 1;
         }
-        temp *= level;
+        temp *= level * (tSpinBonus ? 2 : 1);
         cScore += temp;
         checkHScore();
+        if(tSpinBonus){ 
+            inputManager.SetBonusText("T Spin " + s);
+        }
+        else{
+            inputManager.SetBonusText(s);
+        }
         inputManager.SetScoreText(Integer.toString(cScore));
     }
     public static void checkHScore(){

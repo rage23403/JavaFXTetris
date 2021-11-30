@@ -1,9 +1,10 @@
 
 /**
- * Write a description of class Insets here.
- *
- * @author (your name)
- * @version (a version number or a date)
+ * Contains 4 private variables to help signify the border of something
+ * inspired by JavaFX Insets
+ * 
+ * @author Circle Onyx
+ * @version 1.0
  */
 public class Insets
 {
