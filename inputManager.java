@@ -1,5 +1,7 @@
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -10,22 +12,35 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 /**
- * LAUNCH THIS APPLICATION TO RUN PROGRAM
+ * Write a description of JavaFX class inputManager here.
  *
- * @author Circle Onyx
- * @version 1.1
+ * @author (your name)
+ * @version (a version number or a date)
  */
 public class inputManager extends Application
 {
+    public static Label currentScore;
+    public static Label highScore;
+    public static Thread changeLabelText;
+    public static Task<Void> task;
+    public static boolean b = false;
     @Override
     public void start(Stage stage)
     {
         GridPane pane = new GridPane();
         pane.setMinSize(300, 300);
-        Scene scene = new Scene(pane, 200,0);
-        stage.setTitle("JavaFX Example");
+        Scene scene = new Scene(pane, 300,600);
+        stage.setTitle("INPUT READER");
         stage.setScene(scene);
+        currentScore = new Label("Current Score: 0");
+        highScore = new Label("High Score: ");
+        Button b = new Button("reset");
+        b.setFocusTraversable(false);
+        pane.add(currentScore,0,1);
+        pane.add(highScore,0,2);
+        pane.add(b,0,0);
         Game.gameThread.start();
+
         scene.setOnKeyPressed(event -> {
                 switch(event.getCode()){
                     case RIGHT: Game.right = true;break;
@@ -45,12 +60,26 @@ public class inputManager extends Application
                 } 
                 Game.held = false;
             });
+        b.setOnAction(event -> {
+            Game.game = false;
+            TetrisScore.resetScore();
+        });
 
         // Show the Stage (window)
+        stage.setOnCloseRequest(event -> {Game.game = false; Game.resetFlag = false; Game.playing =false;});
         stage.show();
     }
 
     public static void Main(String[] args){
         launch(args);
+    }
+
+    public static void SetScoreText(String s){
+        Platform.runLater(new Runnable(){
+                        public void run(){
+                            currentScore.setText("Current Score: " + s);
+                            highScore.setText("High Score: " + TetrisScore.getHScore());
+                        }
+                    });
     }
 }

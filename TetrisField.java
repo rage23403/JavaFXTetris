@@ -76,8 +76,8 @@ public class TetrisField
                     nextPiece[i][j] = s[i].charAt(j) == ' ' ? ',' : 'X';
                 }
             }
-            for(int i = 2; i < s.length-2; i++){
-                for(int j = 2; j < s[i].length()-2; j++){
+            for(int i = 2; i < t.piece.length+2; i++){
+                for(int j = 2; j < t.piece[i-2].length+2; j++){
                     if(t.piece[i-2][j-2] != ' '){
                         nextPiece[i][j] = t.piece[i-2][j-2];
                     }
@@ -114,9 +114,9 @@ public class TetrisField
                     else if(j >= field[i].length-1){
                         build.append(nextPiece[i][j-field[i].length+1]);
                     }
-                    else if(j-fieldBorder.getLeft()-current.x == 0 && j-fieldBorder.getLeft()-current.x < 4 && tempy != 0 && tempy < 5){  
+                    else if(j-fieldBorder.getLeft()-current.x == 0 && j-fieldBorder.getLeft()-current.x < current.piece.length && tempy != 0 && tempy < current.piece[0].length+1){  
                         for(int PJ = 0; PJ <  current.piece[tempy-1].length; PJ++){
-                            if(current.piece[tempy-1][PJ] == current.pCharacter){
+                            if(current.piece[tempy-1][PJ] == 'X'){
                                 build.append(current.piece[tempy-1][PJ]);
                             }
                             else{build.append(field[i][j]);}
@@ -133,7 +133,8 @@ public class TetrisField
         }
         String s = "\n\n\n\n" + build.toString();
         System.out.println(s);
-        try{Thread.sleep(1);}catch(Exception e){}
+        //inputManager.SetLabelText(s);
+        try{Thread.sleep(34);}catch(Exception e){}
     }
 
     void ConnectPiece(TetrisPiece piece){
@@ -144,8 +145,26 @@ public class TetrisField
                 }
             }
         }
+        if(piece.TPiece){
+            int corners = 0;
+            Game.TSpinCheck1.x = piece.x;
+            Game.TSpinCheck2.x = piece.x;
+            Game.TSpinCheck3.x = piece.x;
+            Game.TSpinCheck4.x = piece.x;
+            Game.TSpinCheck1.y = piece.y;
+            Game.TSpinCheck2.y = piece.y;
+            Game.TSpinCheck3.y = piece.y;
+            Game.TSpinCheck4.y = piece.y;
+            corners += IsValidMove(Game.TSpinCheck1,0,0) ? 0 : 1;
+            corners += IsValidMove(Game.TSpinCheck2,0,0) ? 0 : 1;
+            corners += IsValidMove(Game.TSpinCheck3,0,0) ? 0 : 1;
+            corners += IsValidMove(Game.TSpinCheck4,0,0) ? 0 : 1;
+            
+            if(corners > 2){
+                TetrisScore.tSpinBonus = true;
+            }
+        }
         PrintField(null);
-        int x = 0;
     }
 
     int checkLines(){
@@ -222,10 +241,6 @@ public class TetrisField
                 field[i][j] = ',';//fill border
             }
             field[i][field[0].length-1] = '\n';
-        }
-        for(int i = 0; i < field.length; i++){for(int j = 0; j < field[i].length; j++){
-                System.out.print(field[i][j]);
-            }
         }
     }
 

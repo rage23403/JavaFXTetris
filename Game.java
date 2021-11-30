@@ -12,6 +12,8 @@ public class Game
     static TetrisPiece next;
     static Random ran = new Random();
     static boolean game = true;
+    static boolean playing = true;
+    static boolean resetFlag = false;
     static long cycleTime;
     static long start;
     static boolean right = false;
@@ -22,10 +24,19 @@ public class Game
     static boolean held = false;
     static Thread gameThread = new Thread(){
             public void run(){
-                GameLoop();
+                while(playing){
+                    game = true;
+                    TetrisScore.resetScore();
+                    GameLoop();
+                }
             }
         };
 
+    /**
+     * not real main method.
+     * 
+     * used for debugging in BlueJ
+     */
     public static void Main(String[] args){
         System.gc();
     }
@@ -68,10 +79,11 @@ public class Game
                     held = true;
                 }
             }
-            else if(current == null){
+            else{
                 int i = playArea.checkLines();
                 if(i > 0){
                     playArea.BreakLines(i);
+                    TetrisScore.scorePoints(i,1);
                 }
                 current = next;
                 GenerateNext();
@@ -79,7 +91,6 @@ public class Game
             playArea.PrintField(current);
             cycleTime += System.currentTimeMillis()-start;
         }
-        System.exit(1);
     }
 
     public static boolean MoveDown(TetrisPiece t){
@@ -164,38 +175,48 @@ public class Game
             "XXXXXXXX"
         };
     static String[] T = {
-            "    ",
-            " X  ",
-            "XXX ",
-            "    "};
+            "   ",
+            "XXX",
+            " X "};
     static String[] J = {
-            "    ",
-            " X  ",
-            " XXX", 
-            "    "};
+            "   ",
+            "X  ",
+            "XXX"};
     static String[] L = {
-            "    ",
-            "  X ",
-            "XXX ",
-            "    "};
+            "   ",
+            "  X",
+            "XXX"};
     static String[] Z = {
-            "    ",
-            "XX  ",
-            " XX ",
-            "    "};
+            "   ",
+            "XX ",
+            " XX"};
     static String[] S = {
-            "    ",
-            " XX ",
-            "XX  ",
-            "    "};
+            "   ",
+            " XX",
+            "XX "};
     static String[] I = {
             " X  ",
             " X  ",
             " X  ",
             " X  "};
     static String[] O = {
-            "    ",
-            " XX ",
-            " XX ",
-            "    "};
+            "XX",
+            "XX"};
+        
+    static TetrisPiece TSpinCheck1 = new TetrisPiece(new String[]{
+            "X  ",
+            "   ",
+            "   "});
+    static TetrisPiece TSpinCheck2 = new TetrisPiece(new String[]{
+            "   ",
+            "   ",
+            "  X"});
+    static TetrisPiece TSpinCheck3 = new TetrisPiece(new String[]{
+            "   ",
+            "   ",
+            "X  "});
+    static TetrisPiece TSpinCheck4 = new TetrisPiece(new String[]{
+            "  X",
+            "   ",
+            "   "});
 }
