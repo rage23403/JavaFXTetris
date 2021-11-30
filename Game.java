@@ -32,18 +32,6 @@ public class Game
             }
         };
 
-    /**
-     * not real main method.
-     * 
-     * used for debugging in BlueJ
-     */
-    public static void Main(String[] args){
-        playArea = new TetrisField(12, 10, new Insets(3), NEXT);
-        TSpinCheck1.x = 9;
-        TSpinCheck1.y = 10;
-        playArea.PrintField(TSpinCheck1);
-    }
-
     public static void GameLoop(){
         playArea = new TetrisField(12, 10, new Insets(3), NEXT);
         TetrisPiece current = GeneratePiece(T);
@@ -225,20 +213,4 @@ public class Game
             "  X",
             "   ",
             "   "});
-    static TetrisPiece TOrientationUp = new TetrisPiece(new String[]{
-            " X ",
-            "XXX",
-            "   "});
-    static TetrisPiece TOrientationLeft = new TetrisPiece(new String[]{
-            " X ",
-            "XX ",
-            " X "});
-    static TetrisPiece TOrientationRight = new TetrisPiece(new String[]{
-            " X ",
-            " XX",
-            " X "});
-    static TetrisPiece TOrientationDown = new TetrisPiece(new String[]{
-            "   ",
-            "XXX",
-            " X "});
 }
