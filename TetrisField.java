@@ -109,7 +109,7 @@ public class TetrisField
         }
         else{
             for(int i = 0; i < field.length; i++){
-                if(i-fieldBorder.getTop() >= current.y && i-fieldBorder.getTop() < current.y+4){
+                if(i-fieldBorder.getTop() >= current.y && i-fieldBorder.getTop() < current.y+current.size()){
                     tempy++;
                 }
                 else{tempy = 0;}
@@ -125,6 +125,7 @@ public class TetrisField
                             }
                             else{build.append(field[i][j]);}
                             j++;
+                            if(j >= field[i].length-2){PJ = current.piece[tempy-1].length;}
                         } 
                         build.append(field[i][j]);
                     }
@@ -236,7 +237,7 @@ public class TetrisField
         p.y = piece.y + y;
         for(int i = 0; i < p.size(); i++){
             for(int j = 0; j < p.size(); j++){
-                if(p.piece[i][j] != ' ' && field[p.y+fieldBorder.getLeft()+i][p.x+fieldBorder.getTop()+j] != ','){
+                if(p.piece[i][j] != ' ' && field[p.y+fieldBorder.getTop()+i][p.x+fieldBorder.getLeft()+j] != ','){
                     return false;
                 }
             }

@@ -1,8 +1,8 @@
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -15,16 +15,16 @@ import javafx.stage.Stage;
  * Contains all of the code for the UI and collects user inputs.
  * 
  * @author Circle Onyx
- * @version 1.1
+ * @version 1.1.5
  */
 public class inputManager extends Application
 {
     public static Label currentScore;
     public static Label highScore;
     public static Label bonusText;
-    public static Thread changeLabelText;
-    public static Task<Void> task;
+    public static Label levelText;
     public static boolean b = false;
+    public static Button pause;
     @Override
     public void start(Stage stage)
     {
@@ -33,15 +33,23 @@ public class inputManager extends Application
         Scene scene = new Scene(pane, 300,600);
         stage.setTitle("INPUT READER");
         stage.setScene(scene);
-        currentScore = new Label("Current Score: 0");
-        highScore = new Label("High Score: ");
+        currentScore = new Label("Current Score: " + TetrisScore.getCScore());
+        highScore = new Label("High Score: " + TetrisScore.getHScore());
+        levelText = new Label("Level " + 1);
         bonusText = new Label();
-        Button b = new Button("reset");
-        b.setFocusTraversable(false);
+        Button start = new Button("Start");
+        Button reset = new Button("Reset");
+        pause = new Button("Pause");
+        reset.setFocusTraversable(false);
+        start.setFocusTraversable(false);
+        pause.setFocusTraversable(false);
         pane.add(currentScore,0,1);
         pane.add(highScore,0,2);
-        pane.add(b,0,0);
-        pane.add(bonusText,0,3);
+        pane.add(levelText,0,3);
+        pane.add(bonusText,0,4);
+        pane.add(reset,0,0);
+        pane.add(start,1,0);
+        pane.add(pause,2,0);
         Game.gameThread.start();
 
         scene.setOnKeyPressed(event -> {
@@ -63,34 +71,73 @@ public class inputManager extends Application
                 } 
                 Game.held = false;
             });
-        b.setOnAction(event -> {
-            Game.game = false;
-            TetrisScore.resetScore();
-        });
+        reset.setOnAction(event -> {
+                Game.game = false;
+            });
+        start.setOnAction(event -> {
+                Game.game = true;
+                Game.paused = true;
+                Game.gameThread.suspend();
+                TetrisScore.resetScore();
+            });
+        pause.setOnAction(event->{
+                Pause(Game.paused);
+            });
 
         // Show the Stage (window)
         stage.setOnCloseRequest(event -> {Game.game = false; Game.resetFlag = false; Game.playing =false;});
         stage.show();
     }
 
+    public static void Pause(boolean b){
+        if(!b){
+            Game.paused = true;
+            Game.gameThread.suspend();
+            Platform.runLater(new Runnable(){
+                public void run()
+                {
+                    bonusText.setText("Paused");
+                }
+            });
+        }
+        else{
+            Game.paused = false;
+            Game.gameThread.resume();
+            Platform.runLater(new Runnable(){
+                public void run()
+                {
+                    bonusText.setText("");
+                }
+            });
+        }
+    }
+
     public static void Main(String[] args){
         launch(args);
     }
-    
+
     public static void SetBonusText(String s){
         Platform.runLater(new Runnable(){
-                        public void run(){
-                            bonusText.setText(s);
-                        }
-                    });
+                public void run(){
+                    bonusText.setText(s);
+                }
+            });
     }
 
     public static void SetScoreText(String s){
         Platform.runLater(new Runnable(){
-                        public void run(){
-                            currentScore.setText("Current Score: " + s);
-                            highScore.setText("High Score: " + TetrisScore.getHScore());
-                        }
-                    });
+                public void run(){
+                    currentScore.setText("Current Score: " + s);
+                    highScore.setText("High Score: " + TetrisScore.getHScore());
+                }
+            });
+    }
+    
+    public static void SetLevelText(String s){
+        Platform.runLater(new Runnable(){
+                public void run(){
+                    levelText.setText("Level " + s);
+                }
+            });        
     }
 }

@@ -1,9 +1,11 @@
 import java.util.Random;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 /**
  * Class containing game loop
  *
  * @author Circle Onyx
- * @version 1.1
+ * @version 1.1.5
  */
 public class Game
 {
@@ -12,6 +14,7 @@ public class Game
     static TetrisPiece next;
     static Random ran = new Random();
     static boolean game = true;
+    static boolean paused = false;
     static boolean playing = true;
     static boolean resetFlag = false;
     static long cycleTime;
@@ -26,24 +29,25 @@ public class Game
             public void run(){
                 while(playing){
                     game = true;
-                    TetrisScore.resetScore();
                     GameLoop();
                 }
             }
         };
+        public static void Garbo(){System.gc();}
 
     public static void GameLoop(){
-        playArea = new TetrisField(12, 10, new Insets(3), NEXT);
+        int level = 1;
+        playArea = new TetrisField(12, 10, new Insets(0), NEXT);
         TetrisPiece current = GeneratePiece(T);
         current.x = playArea.columns/2;
         current.y = 0;
         start = System.currentTimeMillis();
         GenerateNext();
         while(game){
-            if(cycleTime > 50000){
+
+            if(cycleTime > 50000/level){
                 start = System.currentTimeMillis();
                 cycleTime = 0;
-
                 if(!MoveDown(current)){current = null;}
                 if(!playArea.IsValidMove(next,0,0)){
                     game = false;
@@ -74,7 +78,10 @@ public class Game
                 int i = playArea.checkLines();
                 if(i > 0){
                     playArea.BreakLines(i);
-                    TetrisScore.scorePoints(i,1);
+                    if(level < TetrisScore.scorePoints(i,level)){
+                        level++;
+                        inputManager.SetLevelText(Integer.toString(level));
+                    }
                 }
                 else{inputManager.SetBonusText("");}
                 current = next;
@@ -83,6 +90,7 @@ public class Game
             playArea.PrintField(current);
             cycleTime += System.currentTimeMillis()-start;
         }
+        inputManager.Pause(paused);
     }
 
     public static boolean MoveDown(TetrisPiece t){
@@ -196,21 +204,21 @@ public class Game
     static String[] O = {
             "XX",
             "XX"};
-        
+
     static TetrisPiece TSpinCheck1 = new TetrisPiece(new String[]{
-            "X  ",
-            "   ",
-            "   "});
+                "X  ",
+                "   ",
+                "   "});
     static TetrisPiece TSpinCheck2 = new TetrisPiece(new String[]{
-            "   ",
-            "   ",
-            "  X"});
+                "   ",
+                "   ",
+                "  X"});
     static TetrisPiece TSpinCheck3 = new TetrisPiece(new String[]{
-            "   ",
-            "   ",
-            "X  "});
+                "   ",
+                "   ",
+                "X  "});
     static TetrisPiece TSpinCheck4 = new TetrisPiece(new String[]{
-            "  X",
-            "   ",
-            "   "});
+                "  X",
+                "   ",
+                "   "});
 }

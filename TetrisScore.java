@@ -3,14 +3,14 @@
  * Tracks the current score, high score, and whether there's a t-spin or not.
  * 
  * @author Circle Onyx
- * @version 1.1
+ * @version 1.1.5
  */
 public class TetrisScore
 {
     private static int cScore = 0;
     private static int hScore = 10000;
     public static boolean tSpinBonus = false;
-    public static void scorePoints(int lines, int level){
+    public static int scorePoints(int lines, int level){
         String s;
         int temp = 0;
         switch(lines){
@@ -20,7 +20,7 @@ public class TetrisScore
             case 4: temp = 1000; s = "TETRIS!"; break;
             default: temp = 1; s = "FAKER!!"; break;
         }
-        if(level < 0){
+        if(level <= 0){
             level = 1;
         }
         temp *= level * (tSpinBonus ? 2 : 1);
@@ -33,6 +33,8 @@ public class TetrisScore
             inputManager.SetBonusText(s);
         }
         inputManager.SetScoreText(Integer.toString(cScore));
+        if(cScore/level > 1000){level++;}
+        return level;
     }
     public static void checkHScore(){
         if(cScore > hScore){

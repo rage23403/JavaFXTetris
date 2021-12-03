@@ -3,7 +3,7 @@
  * contains the attributes of a tetris piece and its movement related methods
  * 
  * @author Circle Onyx
- * @version 1.1
+ * @version 1.1.01
  */
 public class TetrisPiece
 {
@@ -65,8 +65,9 @@ public class TetrisPiece
 
             if(corners > 2){
                 TetrisScore.tSpinBonus = true;
-            }
+            }else{TetrisScore.tSpinBonus = false;}
         }
+        else{TetrisScore.tSpinBonus = false;}
         piece = temp;
     }
 
@@ -96,8 +97,9 @@ public class TetrisPiece
 
             if(corners > 2){
                 TetrisScore.tSpinBonus = true;
-            }
+            }else{TetrisScore.tSpinBonus = false;}
         }
+        else{TetrisScore.tSpinBonus = false;}
         piece = temp;
     }
 
