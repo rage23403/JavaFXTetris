@@ -69,7 +69,6 @@ public class TetrisScore
         }
         sum += (byte)text.length();
         int i = Byte.toUnsignedInt(sum);
-        //System.out.println(text+" " +i);
         text += ""+(char)i;
         try{
             FileWriter f = new FileWriter("Score.dat");
@@ -108,7 +107,6 @@ public class TetrisScore
                 }
                 else{
                     System.out.println("you cheated not only the game but yourself\nYou didn't grow\nYou didn't improve\nYou took a shortcut and gained nothing!");
-                    System.out.println(sum + z);
                     return false;
                 }
             }
@@ -130,7 +128,6 @@ public class TetrisScore
                 }
                 else{
                     System.out.println("you cheated not only the game but yourself\nYou didn't grow\nYou didn't improve\nYou took a shortcut and gained nothing!");
-                    System.out.println(sum + " " + ez);
                     return false;
                 }
             }
