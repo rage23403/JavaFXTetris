@@ -34,22 +34,20 @@ public class inputManager extends Application
         stage.setTitle("INPUT READER");
         stage.setScene(scene);
         currentScore = new Label("Current Score: " + TetrisScore.getCScore());
+        TetrisScore.loadScore();
         highScore = new Label("High Score: " + TetrisScore.getHScore());
         levelText = new Label("Level " + 1);
         bonusText = new Label();
-        Button start = new Button("Start");
         Button reset = new Button("Reset");
         pause = new Button("Pause");
         reset.setFocusTraversable(false);
-        start.setFocusTraversable(false);
         pause.setFocusTraversable(false);
         pane.add(currentScore,0,1);
         pane.add(highScore,0,2);
         pane.add(levelText,0,3);
         pane.add(bonusText,0,4);
         pane.add(reset,0,0);
-        pane.add(start,1,0);
-        pane.add(pause,2,0);
+        pane.add(pause,1,0);
         Game.gameThread.start();
 
         scene.setOnKeyPressed(event -> {
@@ -73,12 +71,7 @@ public class inputManager extends Application
             });
         reset.setOnAction(event -> {
                 Game.game = false;
-            });
-        start.setOnAction(event -> {
-                Game.game = true;
-                Game.paused = true;
-                Game.gameThread.suspend();
-                TetrisScore.resetScore();
+                Game.paused = false;
             });
         pause.setOnAction(event->{
                 Pause(Game.paused);

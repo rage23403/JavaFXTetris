@@ -91,6 +91,7 @@ public class Game
             cycleTime += System.currentTimeMillis()-start;
         }
         inputManager.Pause(paused);
+        TetrisScore.saveScore();
     }
 
     public static boolean MoveDown(TetrisPiece t){

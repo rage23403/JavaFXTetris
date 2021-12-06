@@ -3,7 +3,7 @@
  * contains the attributes of a tetris piece and its movement related methods
  * 
  * @author Circle Onyx
- * @version 1.1.01
+ * @version 1.1.5
  */
 public class TetrisPiece
 {
