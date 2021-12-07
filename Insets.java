@@ -15,28 +15,33 @@ public class Insets
         bottomI = 0;
         rightI = 0;
     }
+
     public Insets(int top, int bottom, int left, int right){
         topI = top;
         bottomI = bottom;
         leftI = left;
         rightI = right;
     }
+
     public Insets(int border){
         topI = border;
         bottomI = border;
         leftI = border;
         rightI = border;
     }
-    
+
     int getTop(){
         return topI;
     }
+
     int getBottom(){
         return bottomI;
     }
+
     int getLeft(){
         return leftI;
     }
+
     int getRight(){
         return rightI;
     }
