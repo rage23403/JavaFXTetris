@@ -12,9 +12,9 @@ import java.util.Arrays;
  */
 public class TetrisField
 {
-    char[][] field;
-    char[][] nextPiece;
-    char[] oneRow;
+    private char[][] field;
+    private char[][] nextPiece;
+    public boolean nextOn = true;
     int rows, columns;
     Insets fieldBorder;
     public TetrisField(int rows, int columns, Insets border, String[] next){
@@ -95,13 +95,23 @@ public class TetrisField
         int tempy = 0;
         if(current == null){
             for(int i = 0; i < field.length; i++){
-                for (int j = 0; j < field[i].length+nextPiece[i].length; j++){
-                    if(j == field[i].length+nextPiece[i].length-1){}
-                    else if(j >= field[i].length-1){
-                        build.append(nextPiece[i][j-field[i].length+1]);
+                if(nextOn){
+                    for (int j = 0; j < field[i].length+nextPiece[i].length; j++){
+                        if(j == field[i].length+nextPiece[i].length-1){}
+                        else if(j >= field[i].length-1){
+                            build.append(nextPiece[i][j-field[i].length+1]);
+                        }
+                        else{
+                            build.append(field[i][j]);
+                        }
                     }
-                    else{
-                        build.append(field[i][j]);
+                }
+                else{
+                    for (int j = 0; j < field[i].length; j++){
+                        if(j == field[i].length-1){}
+                        else{
+                            build.append(field[i][j]);
+                        }
                     }
                 }
                 build.append(field[i][field[i].length-1]);
@@ -113,24 +123,45 @@ public class TetrisField
                     tempy++;
                 }
                 else{tempy = 0;}
-                for(int j = 0; j < field[i].length+nextPiece[i].length; j++){
-                    if(j == field[i].length+nextPiece[i].length-1){}
-                    else if(j >= field[i].length-1){
-                        build.append(nextPiece[i][j-field[i].length+1]);
+                if(nextOn){
+                    for(int j = 0; j < field[i].length+nextPiece[i].length; j++){
+                        if(j == field[i].length+nextPiece[i].length-1){}
+                        else if(j >= field[i].length-1){
+                            build.append(nextPiece[i][j-field[i].length+1]);
+                        }
+                        else if(j-fieldBorder.getLeft()-current.x == 0 && j-fieldBorder.getLeft()-current.x < current.piece.length && tempy != 0 && tempy < current.piece[0].length+1){  
+                            for(int PJ = 0; PJ <  current.piece[tempy-1].length; PJ++){
+                                if(current.piece[tempy-1][PJ] == 'X'){
+                                    build.append(current.piece[tempy-1][PJ]);
+                                }
+                                else{build.append(field[i][j]);}
+                                j++;
+                                if(j >= field[i].length-2){PJ = current.piece[tempy-1].length;}
+                            } 
+                            build.append(field[i][j]);
+                        }
+                        else{
+                            build.append(field[i][j]);
+                        }
                     }
-                    else if(j-fieldBorder.getLeft()-current.x == 0 && j-fieldBorder.getLeft()-current.x < current.piece.length && tempy != 0 && tempy < current.piece[0].length+1){  
-                        for(int PJ = 0; PJ <  current.piece[tempy-1].length; PJ++){
-                            if(current.piece[tempy-1][PJ] == 'X'){
-                                build.append(current.piece[tempy-1][PJ]);
-                            }
-                            else{build.append(field[i][j]);}
-                            j++;
-                            if(j >= field[i].length-2){PJ = current.piece[tempy-1].length;}
-                        } 
-                        build.append(field[i][j]);
-                    }
-                    else{
-                        build.append(field[i][j]);
+                }
+                else{
+                    for(int j = 0; j < field[i].length; j++){
+                        if(j == field[i].length-1){}
+                        else if(j-fieldBorder.getLeft()-current.x == 0 && j-fieldBorder.getLeft()-current.x < current.piece.length && tempy != 0 && tempy < current.piece[0].length+1){  
+                            for(int PJ = 0; PJ <  current.piece[tempy-1].length; PJ++){
+                                if(current.piece[tempy-1][PJ] == 'X'){
+                                    build.append(current.piece[tempy-1][PJ]);
+                                }
+                                else{build.append(field[i][j]);}
+                                j++;
+                                if(j >= field[i].length-2){PJ = current.piece[tempy-1].length;}
+                            } 
+                            build.append(field[i][j]);
+                        }
+                        else{
+                            build.append(field[i][j]);
+                        }
                     }
                 }
                 build.append(field[i][field[i].length-1]);

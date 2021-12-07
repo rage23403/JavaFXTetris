@@ -33,7 +33,7 @@ public class Game
                 }
             }
         };
-        public static void Garbo(){System.gc();}
+    public static void Garbo(){System.gc();}
 
     public static void GameLoop(){
         int level = 1;
@@ -165,7 +165,12 @@ public class Game
             case 6:next = GeneratePiece(Z);break;
             default:next = GeneratePiece(O);break;
         }
-        playArea.addNext(NEXT,next);        
+        playArea.addNext(NEXT,next);      
+    }
+
+    public static boolean EditNext(){
+        playArea.nextOn = !playArea.nextOn;
+        return playArea.nextOn;
     }
     static String[] NEXT = {
             "XXXXXXXX",
