@@ -167,10 +167,9 @@ public class TetrisField
                 build.append(field[i][field[i].length-1]);
             }
         }
-        String s = "\n\n\n\n" + build.toString();
-        System.out.println(s);
-        //inputManager.SetLabelText(s);
-        try{Thread.sleep(34);}catch(Exception e){}
+        String s = build.toString();
+        inputManager.PaintCanvas(s);
+        try{Thread.sleep(32);}catch(Exception e){}
     }
 
     void ConnectPiece(TetrisPiece piece){

@@ -14,8 +14,15 @@ public class TetrisScore
 {
     private static int cScore = 0;
     private static int hScore = 10000;
+    private static double comboBonus = 1.0;
     public static boolean tSpinBonus = false;
-    public static int scorePoints(int lines, int level){
+    public static int scorePoints(int lines, int level, boolean combo){
+        if(combo){
+            comboBonus+=0.125;
+        }
+        else{
+            comboBonus = 1.0;
+        }
         String s;
         int temp = 0;
         switch(lines){
@@ -29,16 +36,18 @@ public class TetrisScore
             level = 1;
         }
         temp *= level * (tSpinBonus ? 2 : 1);
-        cScore += temp;
+        cScore += temp*comboBonus;
         checkHScore();
+        if(combo){s += "\nCombo x" + ((comboBonus-1)*8);}
         if(tSpinBonus){ 
             inputManager.SetBonusText("T Spin " + s);
+            tSpinBonus = false;
         }
         else{
             inputManager.SetBonusText(s);
         }
         inputManager.SetScoreText(Integer.toString(cScore));
-        if(cScore/level > 1000){level++;}
+        if(cScore/level > level*1000){level++;}
         return level;
     }
 

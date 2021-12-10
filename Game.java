@@ -9,36 +9,65 @@ import javafx.event.Event;
  */
 public class Game
 {
-    static String[] arg;
+    static Random ran = new Random();
     static TetrisField playArea;
     static TetrisPiece next;
-    static Random ran = new Random();
+    static TetrisPiece current;
+    static String[] NEXT = {
+            "XXXXXXXX",
+            "X      X",
+            "X      X",
+            "X      X",
+            "X      X",
+            "X      X",
+            "X      X",
+            "XXXXXXXX"
+        };
+    static final int TetrisCol = 12;
+    static final int TetrisRow = 10;
+    static final int NextCol = NEXT[0].length();
+    static Insets TetrisBorder = new Insets(3);
+    
     static boolean game = true;
     static boolean paused = false;
     static boolean playing = true;
     static boolean resetFlag = false;
+    
     static long cycleTime;
     static long start;
+    
     static boolean right = false;
     static boolean down = false;
     static boolean left = false;
     static boolean ror = false;
     static boolean rol = false;
     static boolean held = false;
+    
     static Thread gameThread = new Thread(){
             public void run(){
                 while(playing){
-                    game = true;
                     GameLoop();
                 }
+                /**
+                playArea = new TetrisField(12, 10, new Insets(3), NEXT);
+                TetrisPiece current = GeneratePiece(T);
+                current.x = playArea.columns/2;
+                current.y = 0;
+                //start = System.currentTimeMillis();
+                GenerateNext();
+                playArea.PrintField(current);
+                 */
             }
         };
     public static void Garbo(){System.gc();}
 
     public static void GameLoop(){
+        boolean combo = false;
         int level = 1;
-        playArea = new TetrisField(12, 10, new Insets(0), NEXT);
-        TetrisPiece current = GeneratePiece(T);
+        TetrisScore.resetScore();
+        playArea = new TetrisField(TetrisCol, TetrisRow, TetrisBorder, NEXT);
+        GenerateNext();
+        current = next;
         current.x = playArea.columns/2;
         current.y = 0;
         start = System.currentTimeMillis();
@@ -49,9 +78,6 @@ public class Game
                 start = System.currentTimeMillis();
                 cycleTime = 0;
                 if(!MoveDown(current)){current = null;}
-                if(!playArea.IsValidMove(next,0,0)){
-                    game = false;
-                }
             }
             if(current != null){
                 if(right && !held){
@@ -61,10 +87,9 @@ public class Game
                     MoveLeft(current);
                     held = true;
                 } else if(down && !held){
+                    start = System.currentTimeMillis();
+                    cycleTime = 0;
                     if(!MoveDown(current)){current = null;}
-                    if(!playArea.IsValidMove(next,0,0)){
-                        game = false;
-                    }
                     held = true;
                 } else if(ror && !held){
                     ROR(current);
@@ -78,20 +103,27 @@ public class Game
                 int i = playArea.checkLines();
                 if(i > 0){
                     playArea.BreakLines(i);
-                    if(level < TetrisScore.scorePoints(i,level)){
+                    if(level < TetrisScore.scorePoints(i,level,combo)){
                         level++;
                         inputManager.SetLevelText(Integer.toString(level));
                     }
+                    combo = true;
                 }
-                else{inputManager.SetBonusText("");}
-                current = next;
-                GenerateNext();
+                else{inputManager.SetBonusText(""); combo = false;}
+                if(!playArea.IsValidMove(next,0,0)){
+                    game = false;
+                }
+                else{
+                    current = next;
+                    GenerateNext();
+                }
             }
             playArea.PrintField(current);
             cycleTime += System.currentTimeMillis()-start;
         }
-        inputManager.Pause(paused);
+        inputManager.SetBonusText("GAME OVER!!");
         TetrisScore.saveScore();
+        inputManager.Pause(paused);
     }
 
     public static boolean MoveDown(TetrisPiece t){
@@ -168,20 +200,25 @@ public class Game
         playArea.addNext(NEXT,next);      
     }
 
+    public static int getColNext(){
+        int tCanWidth = TetrisCol+NextCol+TetrisBorder.getLeft()+TetrisBorder.getRight();
+        return tCanWidth;
+    }
+
+    public static int getCol(){
+        int tCanWidth = TetrisCol+TetrisBorder.getLeft()+TetrisBorder.getRight();
+        return tCanWidth;
+    }
+
+    public static int getRow(){
+        int tCanHeight = TetrisRow+TetrisBorder.getTop()+TetrisBorder.getBottom();
+        return tCanHeight;
+    }
+
     public static boolean EditNext(){
         playArea.nextOn = !playArea.nextOn;
         return playArea.nextOn;
     }
-    static String[] NEXT = {
-            "XXXXXXXX",
-            "X      X",
-            "X      X",
-            "X      X",
-            "X      X",
-            "X      X",
-            "X      X",
-            "XXXXXXXX"
-        };
     static String[] T = {
             "   ",
             "XXX",
@@ -203,10 +240,10 @@ public class Game
             " XX",
             "XX "};
     static String[] I = {
-            " X  ",
-            " X  ",
-            " X  ",
-            " X  "};
+            "    ",
+            "XXXX",
+            "    ",
+            "    "};
     static String[] O = {
             "XX",
             "XX"};
