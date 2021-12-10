@@ -23,8 +23,8 @@ public class Game
             "X      X",
             "XXXXXXXX"
         };
-    static final int TetrisCol = 12;
-    static final int TetrisRow = 10;
+    static final int TetrisCol = 10;
+    static final int TetrisRow = 12;
     static final int NextCol = NEXT[0].length();
     static Insets TetrisBorder = new Insets(3);
     
@@ -66,7 +66,7 @@ public class Game
         boolean combo = false;
         int level = 1;
         TetrisScore.resetScore();
-        playArea = new TetrisField(TetrisCol, TetrisRow, TetrisBorder, NEXT);
+        playArea = new TetrisField(TetrisRow, TetrisCol, TetrisBorder, NEXT);
         GenerateNext();
         current = next;
         current.x = playArea.columns/2;
@@ -202,17 +202,17 @@ public class Game
     }
 
     public static int getColNext(){
-        int tCanWidth = TetrisCol+NextCol+TetrisBorder.getLeft()+TetrisBorder.getRight();
+        int tCanWidth = 2+TetrisCol+NextCol+TetrisBorder.getLeft()+TetrisBorder.getRight();
         return tCanWidth;
     }
 
     public static int getCol(){
-        int tCanWidth = TetrisCol+TetrisBorder.getLeft()+TetrisBorder.getRight();
+        int tCanWidth = 2+TetrisCol+TetrisBorder.getLeft()+TetrisBorder.getRight();
         return tCanWidth;
     }
 
     public static int getRow(){
-        int tCanHeight = TetrisRow+TetrisBorder.getTop()+TetrisBorder.getBottom();
+        int tCanHeight = 1+TetrisRow+TetrisBorder.getTop()+TetrisBorder.getBottom();
         return tCanHeight;
     }
 
