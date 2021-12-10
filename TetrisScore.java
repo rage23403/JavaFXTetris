@@ -8,7 +8,7 @@ import java.io.IOException;
  * Tracks the current score, high score, and whether there's a t-spin or not.
  * 
  * @author Circle Onyx
- * @version 1.1.5
+ * @version 1.2
  */
 public class TetrisScore
 {
@@ -38,7 +38,7 @@ public class TetrisScore
         temp *= level * (tSpinBonus ? 2 : 1);
         cScore += temp*comboBonus;
         checkHScore();
-        if(combo){s += "\nCombo x" + ((comboBonus-1)*8);}
+        if(combo){s += "\nCombo x" + (int)((comboBonus-1)*8);}
         if(tSpinBonus){ 
             inputManager.SetBonusText("T Spin " + s);
             tSpinBonus = false;

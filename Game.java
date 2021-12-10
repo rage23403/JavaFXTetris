@@ -5,7 +5,7 @@ import javafx.event.Event;
  * Class containing game loop
  *
  * @author Circle Onyx
- * @version 1.1.5
+ * @version 1.2
  */
 public class Game
 {
@@ -59,6 +59,7 @@ public class Game
                  */
             }
         };
+        
     public static void Garbo(){System.gc();}
 
     public static void GameLoop(){
