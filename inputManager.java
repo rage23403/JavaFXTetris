@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  * Contains all of the code for the UI and collects user inputs.
  * 
  * @author Circle Onyx
- * @version 1.2
+ * @version 1.2.5
  */
 public class inputManager extends Application
 {
@@ -100,7 +100,7 @@ public class inputManager extends Application
         remNext.setOnAction(event->{
                 g.setFill(Color.BLACK);
                 if(Game.EditNext()){
-                    Game.playArea.PrintField(Game.current);
+                    Game.playArea.PrintField(Game.current[Game.curIndex]);
                     remNext.setText("NextPiece: ON");
                 }
                 else{

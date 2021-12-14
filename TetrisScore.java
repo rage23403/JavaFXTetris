@@ -8,7 +8,7 @@ import java.io.IOException;
  * Tracks the current score, high score, and whether there's a t-spin or not.
  * 
  * @author Circle Onyx
- * @version 1.2
+ * @version 1.2.5
  */
 public class TetrisScore
 {

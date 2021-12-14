@@ -8,7 +8,7 @@ import java.util.Arrays;
  * 
  * 
  * @author Circle Onyx
- * @version 1.2
+ * @version 1.2.5
  */
 public class TetrisField
 {
@@ -169,7 +169,7 @@ public class TetrisField
         }
         String s = build.toString();
         inputManager.PaintCanvas(s);
-        try{Thread.sleep(32);}catch(Exception e){}
+        try{Thread.sleep(16);}catch(Exception e){}
     }
 
     void ConnectPiece(TetrisPiece piece){
@@ -262,7 +262,7 @@ public class TetrisField
 
     boolean IsValidMove(TetrisPiece piece, int x, int y){
         if(piece == null){return true;}
-        TetrisPiece p = new TetrisPiece(piece.piece);
+        TetrisPiece p = new TetrisPiece(piece.piece,piece.TPiece);
         p.x = piece.x + x;
         p.y = piece.y + y;
         for(int i = 0; i < p.size(); i++){
