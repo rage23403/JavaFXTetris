@@ -14,6 +14,7 @@ public class TetrisField
 {
     private char[][] field;
     private char[][] nextPiece;
+    private char[][] holdPiece;
     public boolean nextOn = true;
     int rows, columns;
     Insets fieldBorder;
@@ -23,6 +24,7 @@ public class TetrisField
         fieldBorder = border;
         reset();
         addNext(next, null);
+        addHold(next, null);
     }
 
     public void reset(){
@@ -84,6 +86,32 @@ public class TetrisField
                 for(int j = 2; j < t.piece[i-2].length+2; j++){
                     if(t.piece[i-2][j-2] != ' '){
                         nextPiece[i][j] = t.piece[i-2][j-2];
+                    }
+                }
+            }
+        }
+    }
+    void addHold(String[] s, TetrisPiece t){
+        holdPiece = new char[9][10];
+        if(t == null){
+            for(int i = 0; i < s.length; i++){
+                for(int j = 0; j < s[i].length(); j++){
+                    holdPiece[i][j] = s[i].charAt(j);
+                }
+                holdPiece[i][9] = '\n';
+            }
+        }
+        else{
+            for(int i = 0; i < s.length; i++){
+                for(int j = 0; j < s[i].length(); j++){
+                    holdPiece[i][j] = s[i].charAt(j) == ' ' ? ',' : 'X';
+                }
+                holdPiece[i][9] = '\n';
+            }
+            for(int i = 2; i < t.piece.length+2; i++){
+                for(int j = 2; j < t.piece[i-2].length+2; j++){
+                    if(t.piece[i-2][j-2] != ' '){
+                        holdPiece[i][j] = t.piece[i-2][j-2];
                     }
                 }
             }
@@ -169,7 +197,18 @@ public class TetrisField
         }
         String s = build.toString();
         inputManager.PaintCanvas(s);
+        PrintHold();
         try{Thread.sleep(16);}catch(Exception e){}
+    }
+    
+    void PrintHold(){
+        StringBuilder b = new StringBuilder();
+        for(int i = 0; i < holdPiece.length; i++){
+            for(int j = 0; j < holdPiece[i].length; j++){
+                b.append(holdPiece[i][j]);
+            }
+        }
+        inputManager.PaintHoldCan(b.toString());
     }
 
     void ConnectPiece(TetrisPiece piece){

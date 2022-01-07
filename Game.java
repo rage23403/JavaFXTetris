@@ -17,6 +17,7 @@ public class Game
     static TetrisField playArea;
     static TetrisPiece[] next = new TetrisPiece[7];
     static TetrisPiece[] current = new TetrisPiece[7];
+    static TetrisPiece holdPiece = null;
     static String[] NEXT = {
             "XXXXXXXX",
             "X      X",
@@ -40,11 +41,12 @@ public class Game
     static long cycleTime;
     static long start;
 
-    static boolean right = false;
-    static boolean down = false;
-    static boolean left = false;
-    static boolean ror = false;
-    static boolean rol = false;
+    static boolean rightBtn = false;
+    static boolean downBtn = false;
+    static boolean leftBtn = false;
+    static boolean rorBtn = false;
+    static boolean rolBtn = false;
+    static boolean holdBtn = false;
     static boolean held = false;
 
     static Thread gameThread = new Thread(){
@@ -67,15 +69,16 @@ public class Game
     public static void Garbo(){System.gc();}
 
     public static void GameLoop(){
+        holdPiece = null;
         boolean combo = false;
         curIndex = 0;
         int level = 1;
         TetrisScore.resetScore();
         playArea = new TetrisField(TetrisRow, TetrisCol, TetrisBorder, NEXT);
         GenerateNext();
-        playArea.addNext(NEXT, current[1]);
         start = System.currentTimeMillis();
         GenerateNext();
+        playArea.addNext(NEXT, current[1]);
         while(game){
 
             if(cycleTime > 50000/level){
@@ -84,22 +87,25 @@ public class Game
                 if(!MoveDown(current[curIndex])){current[curIndex] = null;}
             }
             if(current[curIndex] != null){
-                if(right && !held){
+                if(rightBtn && !held){
                     MoveRight(current[curIndex]);
                     held = true;
-                }else if(left && !held){
+                }else if(leftBtn && !held){
                     MoveLeft(current[curIndex]);
                     held = true;
-                } else if(down && !held){
+                } else if(downBtn && !held){
                     start = System.currentTimeMillis();
                     cycleTime = 0;
                     if(!MoveDown(current[curIndex])){current[curIndex] = null;}
                     held = true;
-                } else if(ror && !held){
+                } else if(rorBtn  && !held){
                     ROR(current[curIndex]);
                     held = true;
-                } else if(rol && !held){
+                } else if(rolBtn  && !held){
                     ROL(current[curIndex]);
+                    held = true;
+                } else if(holdBtn && !held){
+                    Hold();
                     held = true;
                 }
             }
@@ -185,6 +191,22 @@ public class Game
             return false;
         }
         return true;
+    }
+    
+    public static void Hold(){
+        if(holdPiece == null){
+            holdPiece = current[curIndex];
+            current[curIndex] = null;
+            playArea.addHold(NEXT, holdPiece);
+        }
+        else if(playArea.IsValidMove(holdPiece,0,0)){
+            TetrisPiece temp = new TetrisPiece(current[curIndex].piece, current[curIndex].TPiece);
+            current[curIndex] = holdPiece;
+            temp.x = TetrisCol/2;
+            temp.y = 0;
+            holdPiece = temp;
+            playArea.addHold(NEXT, holdPiece);
+        }
     }
 
     public static TetrisPiece GeneratePiece(String[] s){

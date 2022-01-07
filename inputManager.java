@@ -28,7 +28,9 @@ public class inputManager extends Application
     static int tCanHeight = BrushSize*(Game.getRow());
 
     public static Canvas tetrisCan = new Canvas(tCanWidthNext,tCanHeight);
+    public static Canvas HoldCan = new Canvas(8*BrushSize,tCanHeight);
     public static GraphicsContext g;
+    public static GraphicsContext gHold;
     public static Label currentScore;
     public static Label highScore;
     public static Label bonusText;
@@ -43,6 +45,7 @@ public class inputManager extends Application
         stage.setScene(scene);
         TetrisScore.loadScore();
         g = tetrisCan.getGraphicsContext2D();
+        gHold = HoldCan.getGraphicsContext2D();
         currentScore = new Label("Current Score: " + TetrisScore.getCScore());
         highScore = new Label("High Score: " + TetrisScore.getHScore());
         levelText = new Label("Level " + 1);
@@ -58,29 +61,32 @@ public class inputManager extends Application
         pane.add(highScore,0,2);
         pane.add(levelText,0,3);
         pane.add(bonusText,0,4);
-        pane.add(tetrisCan,0,0);
-        pane.add(reset,1,0);
-        pane.add(pause,2,0);
-        pane.add(remNext,3,0);
+        pane.add(HoldCan,0,0);
+        pane.add(tetrisCan,1,0);
+        pane.add(reset,2,0);
+        pane.add(pause,3,0);
+        pane.add(remNext,4,0);
         Game.gameThread.start();
 
         scene.setOnKeyPressed(event -> {
                 switch(event.getCode()){
-                    case RIGHT: Game.right = true;break;
-                    case LEFT: Game.left = true;break;
-                    case DOWN: Game.down = true;break;
-                    case X: Game.ror = true;break;
-                    case Z: Game.rol = true;break;
+                    case RIGHT: Game.rightBtn = true;break;
+                    case LEFT: Game.leftBtn = true;break;
+                    case DOWN: Game.downBtn = true;break;
+                    case X: Game.rorBtn = true;break;
+                    case Z: Game.rolBtn = true;break;
                     case ESCAPE: Pause(Game.paused);break;
+                    case A: Game.holdBtn = true;break;
                 }
             });
         scene.setOnKeyReleased(event -> {
                 switch(event.getCode()){
-                    case RIGHT: Game.right = false;break;
-                    case LEFT: Game.left = false;break;
-                    case DOWN: Game.down = false;break;
-                    case X: Game.ror = false;break;
-                    case Z: Game.rol = false;break;
+                    case RIGHT: Game.rightBtn = false;break;
+                    case LEFT: Game.leftBtn = false;break;
+                    case DOWN: Game.downBtn = false;break;
+                    case X: Game.rorBtn = false;break;
+                    case Z: Game.rolBtn = false;break;
+                    case A: Game.holdBtn = false;break;
                 } 
                 Game.held = false;
             });
@@ -166,19 +172,37 @@ public class inputManager extends Application
             });        
     }
 
-    public static void PaintCanvas(String s){
-        Platform.runLater(() -> {
-                int x = 0;
-                int y = 0;
-                for(int i = 0; i < s.length(); i++){
-                    switch(s.charAt(i)){
-                        case ',':g.setFill(Color.WHITE);g.fillRect(x,y,BrushSize,BrushSize);break;
-                        case 'X':g.setFill(Color.BLACK);g.fillRect(x,y,BrushSize,BrushSize);break;
-                        case '\n':y+=BrushSize; x = -BrushSize;break;
-                        default:g.setFill(Color.WHITE);g.fillRect(x,y,BrushSize,BrushSize);
+    public static void PaintHoldCan(String s){
+        Platform.runLater(new Runnable(){
+                public void run(){
+                    int x = 0;
+                    int y = 0;
+                    for(int i = 0; i < s.length(); i++){
+                        switch(s.charAt(i)){
+                            case ',':gHold.setFill(Color.WHITE);gHold.fillRect(x,y,BrushSize,BrushSize);break;
+                            case 'X':gHold.setFill(Color.BLACK);gHold.fillRect(x,y,BrushSize,BrushSize);break;
+                            case '\n':y+=BrushSize; x = -BrushSize;break;
+                            default:gHold.setFill(Color.WHITE);gHold.fillRect(x,y,BrushSize,BrushSize);break;
+                        }
+                        x+=BrushSize;
                     }
-                    x+=BrushSize;
-                }
-            });
+                }});
+    }
+
+    public static void PaintCanvas(String s){
+        Platform.runLater(new Runnable(){
+                public void run(){
+                    int x = 0;
+                    int y = 0;
+                    for(int i = 0; i < s.length(); i++){
+                        switch(s.charAt(i)){
+                            case ',':g.setFill(Color.WHITE);g.fillRect(x,y,BrushSize,BrushSize);break;
+                            case 'X':g.setFill(Color.BLACK);g.fillRect(x,y,BrushSize,BrushSize);break;
+                            case '\n':y+=BrushSize; x = -BrushSize;break;
+                            default:g.setFill(Color.WHITE);g.fillRect(x,y,BrushSize,BrushSize);
+                        }
+                        x+=BrushSize;
+                    }
+                }});
     }
 }
