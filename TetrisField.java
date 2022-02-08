@@ -8,7 +8,7 @@ import java.util.Arrays;
  * 
  * 
  * @author Circle Onyx
- * @version 1.3
+ * @version 1.3.5
  */
 public class TetrisField
 {
@@ -244,6 +244,7 @@ public class TetrisField
                             case 'O':temp[i][j] = '|';break;
                             case 'Z':temp[i][j] = '~';break;
                             case 'S':temp[i][j] = '`';break;
+                            case 'X':temp[i][j] = '.';break;
                         }
                     }
                     if(count > columns+1){
@@ -258,7 +259,7 @@ public class TetrisField
                     count = 0;
                 }
             }
-            if(charArrContains(temp[i], '-') || charArrContains(temp[i], '=') || charArrContains(temp[i], '_') || charArrContains(temp[i], '+')  || charArrContains(temp[i], '|') || charArrContains(temp[i], '~') || charArrContains(temp[i], '`')){
+            if(charArrContains(temp[i], '-') || charArrContains(temp[i], '=') || charArrContains(temp[i], '_') || charArrContains(temp[i], '+')  || charArrContains(temp[i], '|') || charArrContains(temp[i], '~') || charArrContains(temp[i], '`') || charArrContains(temp[i], '.')){
                 linecheck++;
                 if(lines != linecheck){
                     for(int j = 0; j < field[i].length; j++){
@@ -270,6 +271,7 @@ public class TetrisField
                             case '|':temp[i][j] = 'O';break;
                             case '~':temp[i][j] = 'Z';break;
                             case '`':temp[i][j] = 'S';break;
+                            case '.':temp[i][j] = 'X';break;
                         }
                     }
                     linecheck--;

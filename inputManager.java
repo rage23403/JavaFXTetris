@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  * Contains all of the code for the UI and collects user inputs.
  * 
  * @author Circle Onyx
- * @version 1.3
+ * @version 1.3.5
  */
 public class inputManager extends Application
 {
@@ -40,7 +40,7 @@ public class inputManager extends Application
     public void start(Stage stage)
     {
         GridPane pane = new GridPane();
-        Scene scene = new Scene(pane, 500,300);
+        Scene scene = new Scene(pane, 600,400);
         stage.setTitle("INPUT READER");
         stage.setScene(scene);
         TetrisScore.loadScore();
@@ -57,10 +57,10 @@ public class inputManager extends Application
         reset.setFocusTraversable(false);
         pause.setFocusTraversable(false);
         remNext.setFocusTraversable(false);
-        pane.add(currentScore,0,1);
-        pane.add(highScore,0,2);
-        pane.add(levelText,0,3);
-        pane.add(bonusText,0,4);
+        pane.add(currentScore,1,1);
+        pane.add(highScore,1,2);
+        pane.add(levelText,1,3);
+        pane.add(bonusText,1,4);
         pane.add(HoldCan,0,0);
         pane.add(tetrisCan,1,0);
         pane.add(reset,2,0);

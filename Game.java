@@ -8,7 +8,7 @@ import javafx.event.Event;
  * Class containing game loop
  *
  * @author Circle Onyx
- * @version 1.3
+ * @version 1.3.5
  */
 public class Game
 {
@@ -138,6 +138,7 @@ public class Game
         }
         inputManager.SetBonusText("GAME OVER!!");
         TetrisScore.saveScore();
+        TetrisScore.stored = false;
         inputManager.Pause(paused);
     }
 

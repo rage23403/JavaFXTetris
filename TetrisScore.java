@@ -8,7 +8,7 @@ import java.io.IOException;
  * Tracks the current score, high score, and whether there's a t-spin or not.
  * 
  * @author Circle Onyx
- * @version 1.3
+ * @version 1.3.5
  */
 public class TetrisScore
 {
@@ -16,6 +16,7 @@ public class TetrisScore
     private static int hScore = 10000;
     private static double comboBonus = 1.0;
     public static boolean tSpinBonus = false;
+    public static boolean stored = false;
     public static int scorePoints(int lines, int level, boolean combo){
         if(combo){
             comboBonus+=0.125;
@@ -26,22 +27,27 @@ public class TetrisScore
         String s;
         int temp = 0;
         switch(lines){
-            case 1: temp = 100; s = "Single"; break;
-            case 2: temp = 250; s = "Double"; break;
-            case 3: temp = 400; s = "Triple"; break;
+            case 1: temp = 100; s = "Single"; if(stored){stored = tSpinBonus;} break;
+            case 2: temp = 250; s = "Double"; if(stored){stored = tSpinBonus;} break;
+            case 3: temp = 400; s = "Triple"; if(stored){stored = tSpinBonus;} break;
             case 4: temp = 1000; s = "TETRIS!"; break;
-            default: temp = 1; s = "FAKER!!"; break;
+            default: temp = 1; s = "FAKER!!"; stored = tSpinBonus; break;
         }
         if(level <= 0){
             level = 1;
         }
+        temp += stored ? temp : 0;
         temp *= level * (tSpinBonus ? 2 : 1);
         cScore += temp*comboBonus;
         checkHScore();
         if(combo){s += "\nCombo x" + (int)((comboBonus-1)*8);}
+        if(stored){s = "Back-to-back " + s;}
+        if(lines == 4 || tSpinBonus){stored = true;}
+        else{stored = false;}
         if(tSpinBonus){ 
             inputManager.SetBonusText("T Spin " + s);
             tSpinBonus = false;
+            stored = true;
         }
         else{
             inputManager.SetBonusText(s);
