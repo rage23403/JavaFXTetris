@@ -8,7 +8,7 @@ import java.util.Arrays;
  * 
  * 
  * @author Circle Onyx
- * @version 1.2.5
+ * @version 1.3
  */
 public class TetrisField
 {
@@ -79,7 +79,7 @@ public class TetrisField
         else{
             for(int i = 0; i < s.length; i++){
                 for(int j = 0; j < s[i].length(); j++){
-                    nextPiece[i][j] = s[i].charAt(j) == ' ' ? ',' : 'X';
+                    nextPiece[i][j] = s[i].charAt(j) == ' ' ? ',' : s[i].charAt(j);
                 }
             }
             for(int i = 2; i < t.piece.length+2; i++){
@@ -91,6 +91,7 @@ public class TetrisField
             }
         }
     }
+
     void addHold(String[] s, TetrisPiece t){
         holdPiece = new char[9][10];
         if(t == null){
@@ -104,7 +105,7 @@ public class TetrisField
         else{
             for(int i = 0; i < s.length; i++){
                 for(int j = 0; j < s[i].length(); j++){
-                    holdPiece[i][j] = s[i].charAt(j) == ' ' ? ',' : 'X';
+                    holdPiece[i][j] = s[i].charAt(j) == ' ' ? ',' : s[i].charAt(j);
                 }
                 holdPiece[i][9] = '\n';
             }
@@ -159,7 +160,7 @@ public class TetrisField
                         }
                         else if(j-fieldBorder.getLeft()-current.x == 0 && j-fieldBorder.getLeft()-current.x < current.piece.length && tempy != 0 && tempy < current.piece[0].length+1){  
                             for(int PJ = 0; PJ <  current.piece[tempy-1].length; PJ++){
-                                if(current.piece[tempy-1][PJ] == 'X'){
+                                if(current.piece[tempy-1][PJ] != ' ' && current.piece[tempy-1][PJ] != ','){
                                     build.append(current.piece[tempy-1][PJ]);
                                 }
                                 else{build.append(field[i][j]);}
@@ -178,7 +179,7 @@ public class TetrisField
                         if(j == field[i].length-1){}
                         else if(j-fieldBorder.getLeft()-current.x == 0 && j-fieldBorder.getLeft()-current.x < current.piece.length && tempy != 0 && tempy < current.piece[0].length+1){  
                             for(int PJ = 0; PJ <  current.piece[tempy-1].length; PJ++){
-                                if(current.piece[tempy-1][PJ] == 'X'){
+                                if(current.piece[tempy-1][PJ] != ' ' && current.piece[tempy-1][PJ] != ','){
                                     build.append(current.piece[tempy-1][PJ]);
                                 }
                                 else{build.append(field[i][j]);}
@@ -200,7 +201,7 @@ public class TetrisField
         PrintHold();
         try{Thread.sleep(16);}catch(Exception e){}
     }
-    
+
     void PrintHold(){
         StringBuilder b = new StringBuilder();
         for(int i = 0; i < holdPiece.length; i++){
@@ -214,7 +215,7 @@ public class TetrisField
     void ConnectPiece(TetrisPiece piece){
         for(int i = 0; i < piece.size(); i++){
             for(int j = 0; j < piece.size(); j++){
-                if(piece.piece[i][j] == 'X'){
+                if(piece.piece[i][j] != ',' && piece.piece[i][j] != ' '){
                     field[piece.y+fieldBorder.getLeft()+i][piece.x+fieldBorder.getTop()+j] = piece.piece[i][j];
                 }
             }
@@ -229,16 +230,24 @@ public class TetrisField
         int count = 0;
         for(int i = 0; i < field.length; i++){
             for (int j = 0; j < field[i].length; j++){
-                if(field[i][j] == 'X' && i < field.length-fieldBorder.getBottom()-1){
+                if(field[i][j] != ',' && field[i][j] != ' ' && i < field.length-fieldBorder.getBottom()-1){
                     count++;
                     if(count == 1){
-                        temp[i][j] = 'X';
+                        temp[i][j] = field[i][j];
                     }
                     else if (1 < count && count < columns+2) {
-                        temp[i][j] = '-';
+                        switch(field[i][j]){
+                            case 'I':temp[i][j] = '-';break;
+                            case 'T':temp[i][j] = '=';break;
+                            case 'L':temp[i][j] = '_';break;
+                            case 'J':temp[i][j] = '+';break;
+                            case 'O':temp[i][j] = '|';break;
+                            case 'Z':temp[i][j] = '~';break;
+                            case 'S':temp[i][j] = '`';break;
+                        }
                     }
                     if(count > columns+1){
-                        temp[i][j] = 'X';
+                        temp[i][j] = field[i][j];
                         lines++;
                         count = 0;
                     }
@@ -249,12 +258,18 @@ public class TetrisField
                     count = 0;
                 }
             }
-            if(charArrContains(temp[i], '-')){
+            if(charArrContains(temp[i], '-') || charArrContains(temp[i], '=') || charArrContains(temp[i], '_') || charArrContains(temp[i], '+')  || charArrContains(temp[i], '|') || charArrContains(temp[i], '~') || charArrContains(temp[i], '`')){
                 linecheck++;
                 if(lines != linecheck){
                     for(int j = 0; j < field[i].length; j++){
-                        if(temp[i][j] == '-'){
-                            temp[i][j] = 'X';
+                        switch(temp[i][j]){
+                            case '-':temp[i][j] = 'I';break;
+                            case '=':temp[i][j] = 'T';break;
+                            case '_':temp[i][j] = 'L';break;
+                            case '+':temp[i][j] = 'J';break;
+                            case '|':temp[i][j] = 'O';break;
+                            case '~':temp[i][j] = 'Z';break;
+                            case '`':temp[i][j] = 'S';break;
                         }
                     }
                     linecheck--;
@@ -274,10 +289,9 @@ public class TetrisField
     void BreakLines(int lines){
         int linesDone = 0;
         for(int i = field.length-1-fieldBorder.getBottom(); i >= fieldBorder.getTop(); i--){
-            if(charArrContains(field[i], '-')){
+            if(charArrContains(field[i], '-') || charArrContains(field[i], '=') || charArrContains(field[i], '_') || charArrContains(field[i], '+') || charArrContains(field[i], '|') || charArrContains(field[i], '~') || charArrContains(field[i], '`')){
                 linesDone++;
-            }
-            else{
+            } else{
                 char[] temp = field[i + linesDone];
                 field[i+linesDone] = field[i];
                 field[i] = temp;

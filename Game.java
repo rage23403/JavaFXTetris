@@ -8,7 +8,7 @@ import javafx.event.Event;
  * Class containing game loop
  *
  * @author Circle Onyx
- * @version 1.2.5
+ * @version 1.3
  */
 public class Game
 {
@@ -264,36 +264,36 @@ public class Game
     }
     static String[] T = {
             "   ",
-            "XXX",
-            " X "};
+            "TTT",
+            " T "};
     static char[][] Tc = {
             {' ', ' ', ' '},
-            {'X', 'X', 'X'},
-            {' ', 'X', ' '}};
+            {'T', 'T', 'T'},
+            {' ', 'T', ' '}};
     static String[] J = {
             "   ",
-            "X  ",
-            "XXX"};
+            "J  ",
+            "JJJ"};
     static String[] L = {
             "   ",
-            "  X",
-            "XXX"};
+            "  L",
+            "LLL"};
     static String[] Z = {
             "   ",
-            "XX ",
-            " XX"};
+            "ZZ ",
+            " ZZ"};
     static String[] S = {
             "   ",
-            " XX",
-            "XX "};
+            " SS",
+            "SS "};
     static String[] I = {
             "    ",
-            "XXXX",
+            "IIII",
             "    ",
             "    "};
     static String[] O = {
-            "XX",
-            "XX"};
+            "OO",
+            "OO"};
 
     static TetrisPiece TSpinCheck1 = new TetrisPiece(new String[]{
                 "X  ",
