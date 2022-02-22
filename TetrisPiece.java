@@ -3,10 +3,20 @@
  * contains the attributes of a tetris piece and its movement related methods
  * 
  * @author Circle Onyx
- * @version 1.1.5
+ * @version 1.3.5
  */
 public class TetrisPiece
 {
+    @Override
+    public String toString(){
+        StringBuilder b = new StringBuilder();
+        for(int i = 0; i < piece.length; i++){
+            for(int j = 0; j < piece[i].length+1; j++){
+                if(j == piece[i].length){b.append('\n');}else{b.append(piece[i][j]);}
+            }
+        }
+        return b.toString();
+    }
     char[][] piece;
     boolean TPiece = false;
     int x, y;
@@ -23,13 +33,16 @@ public class TetrisPiece
         }
     }
 
-    public TetrisPiece(char[][] pieceLayout)
+    public TetrisPiece(char[][] pieceLayout, boolean T)
     {
         piece = new char[pieceLayout.length][pieceLayout[0].length];
         for(int i = 0; i < pieceLayout.length; i++){
             for(int j = 0; j < pieceLayout[i].length; j++){
                 piece[i][j] = pieceLayout[i][j];
             }
+        }
+        if(T){
+            TPiece = true;
         }
     }
 
