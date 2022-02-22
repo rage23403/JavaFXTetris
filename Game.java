@@ -113,6 +113,7 @@ public class Game
                 int i = playArea.checkLines();
                 if(i > 0){
                     playArea.BreakLines(i);
+                    TetrisScore.cleared = playArea.cleared();
                     if(level < TetrisScore.scorePoints(i,level,combo)){
                         level++;
                         inputManager.SetLevelText(Integer.toString(level));

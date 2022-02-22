@@ -13,6 +13,7 @@ import java.util.Arrays;
 public class TetrisField
 {
     private char[][] field;
+    private char[][] clearedVer;
     private char[][] nextPiece;
     private char[][] holdPiece;
     public boolean nextOn = true;
@@ -28,6 +29,7 @@ public class TetrisField
     }
 
     public void reset(){
+        clearedVer = new char[rows+fieldBorder.getBottom()+fieldBorder.getTop()+1][columns+fieldBorder.getLeft()+fieldBorder.getRight()+3];
         field = new char[rows+fieldBorder.getBottom()+fieldBorder.getTop()+1][columns+fieldBorder.getLeft()+fieldBorder.getRight()+3];
         for(int i = 0; i < fieldBorder.getTop(); i++){
             for(int j = 0; j < field[0].length-1; j++){
@@ -64,6 +66,11 @@ public class TetrisField
                 field[i][j] = ',';
             }
             field[i][field[0].length-1] = '\n';
+        }
+        for(int i = 0; i < field.length; i++){
+            for(int j = 0; j < field.length; j++){
+                clearedVer[i][j] = field[i][j];
+            }
         }
     }
 
@@ -117,6 +124,15 @@ public class TetrisField
                 }
             }
         }
+    }
+    
+    public boolean cleared(){
+        for(int i = 0; i < field.length; i++){
+            for(int j = 0; j < field.length; j++){
+                if(clearedVer[i][j] != field[i][j]){return false;}
+            }
+        }
+        return true;
     }
 
     void PrintField(TetrisPiece current){

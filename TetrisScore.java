@@ -17,6 +17,7 @@ public class TetrisScore
     private static double comboBonus = 1.0;
     public static boolean tSpinBonus = false;
     public static boolean stored = false;
+    public static boolean cleared = false;
     public static int scorePoints(int lines, int level, boolean combo){
         if(combo){
             comboBonus+=0.125;
@@ -37,10 +38,11 @@ public class TetrisScore
             level = 1;
         }
         temp += stored ? temp : 0;
-        temp *= level * (tSpinBonus ? 2 : 1);
+        temp *= level * (tSpinBonus ? 2 : 1)*(cleared ? 5 : 1);
         cScore += temp*comboBonus;
         checkHScore();
         if(combo){s += "\nCombo x" + (int)((comboBonus-1)*8);}
+        if(cleared){s+= "\nPERFECT CLEAR";}
         if(stored){s = "Back-to-back " + s;}
         if(lines == 4 || tSpinBonus){stored = true;}
         else{stored = false;}
@@ -54,6 +56,7 @@ public class TetrisScore
         }
         inputManager.SetScoreText(Integer.toString(cScore));
         if(cScore/level > level*1000){level++;}
+        cleared = false;
         return level;
     }
 
