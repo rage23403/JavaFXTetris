@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  * Contains all of the code for the UI and collects user inputs.
  * 
  * @author Circle Onyx
- * @version 1.3.5
+ * @version 1.4
  */
 public class inputManager extends Application
 {

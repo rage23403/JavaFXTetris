@@ -8,7 +8,7 @@ import javafx.event.Event;
  * Class containing game loop
  *
  * @author Circle Onyx
- * @version 1.3.5
+ * @version 1.4
  */
 public class Game
 {
@@ -48,6 +48,7 @@ public class Game
     static boolean rolBtn = false;
     static boolean holdBtn = false;
     static boolean held = false;
+    static BasicTimer time;
 
     static Thread gameThread = new Thread(){
             public void run(){
@@ -69,6 +70,8 @@ public class Game
     public static void Garbo(){System.gc();}
 
     public static void GameLoop(){
+        time = new BasicTimer();
+        time.start();
         holdPiece = null;
         boolean combo = false;
         curIndex = 0;
@@ -87,26 +90,35 @@ public class Game
                 if(!MoveDown(current[curIndex])){current[curIndex] = null;}
             }
             if(current[curIndex] != null){
-                if(rightBtn && !held){
-                    MoveRight(current[curIndex]);
-                    held = true;
-                }else if(leftBtn && !held){
-                    MoveLeft(current[curIndex]);
-                    held = true;
-                } else if(downBtn && !held){
-                    start = System.currentTimeMillis();
-                    cycleTime = 0;
-                    if(!MoveDown(current[curIndex])){current[curIndex] = null;}
-                    held = true;
-                } else if(rorBtn  && !held){
-                    ROR(current[curIndex]);
-                    held = true;
-                } else if(rolBtn  && !held){
-                    ROL(current[curIndex]);
-                    held = true;
-                } else if(holdBtn && !held){
-                    Hold();
-                    held = true;
+                if(time.Timing > 5){
+                    if(rightBtn && (time.Timing > 10 || !held)){
+                        MoveRight(current[curIndex]);
+                        held = true;
+                        time.Timing = 0;
+                    }
+                    if(leftBtn &&  (time.Timing > 10 || !held)){
+                        MoveLeft(current[curIndex]);
+                        held = true;
+                        time.Timing = 0;
+                    }
+                    if(downBtn){
+                        start = System.currentTimeMillis();
+                        cycleTime = 0;
+                        if(!MoveDown(current[curIndex])){current[curIndex] = null;}
+                        time.Timing = 0;
+                    }
+                    if(rorBtn && !held){
+                        ROR(current[curIndex]);
+                        held = true;
+                    }
+                    if(rolBtn && !held){
+                        ROL(current[curIndex]);
+                        held = true;
+                    }
+                    if(holdBtn && !held){
+                        Hold();
+                        held = true;
+                    }
                 }
             }
             else{
@@ -194,10 +206,12 @@ public class Game
         }
         return true;
     }
-    
+
     public static void Hold(){
         if(holdPiece == null){
             holdPiece = current[curIndex];
+            holdPiece.x = TetrisCol/2;
+            holdPiece.y = 0;
             current[curIndex] = null;
             playArea.addHold(NEXT, holdPiece);
         }
