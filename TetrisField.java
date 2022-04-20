@@ -8,7 +8,7 @@ import java.util.Arrays;
  * 
  * 
  * @author Circle Onyx
- * @version 1.4
+ * @version 1.5
  */
 public class TetrisField
 {
@@ -333,7 +333,7 @@ public class TetrisField
 
     boolean IsValidMove(TetrisPiece piece, int x, int y){
         if(piece == null){return true;}
-        TetrisPiece p = new TetrisPiece(piece.piece,piece.TPiece);
+        TetrisPiece p = new TetrisPiece(piece.piece,piece.TPiece,piece.IPiece);
         p.x = piece.x + x;
         p.y = piece.y + y;
         for(int i = 0; i < p.size(); i++){

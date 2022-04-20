@@ -15,10 +15,10 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
- * Contains all of the code for the UI and collects user inputs.
+ * Contains all of the code for the UI, Painting and collecting the user's inputs.
  * 
  * @author Circle Onyx
- * @version 1.4
+ * @version 1.5
  */
 public class inputManager extends Application
 {
@@ -70,6 +70,7 @@ public class inputManager extends Application
 
         scene.setOnKeyPressed(event -> {
                 switch(event.getCode()){
+                    case UP: Game.upBtn = true;break;
                     case RIGHT: Game.rightBtn = true;break;
                     case LEFT: Game.leftBtn = true;break;
                     case DOWN: Game.downBtn = true;break;
@@ -81,6 +82,7 @@ public class inputManager extends Application
             });
         scene.setOnKeyReleased(event -> {
                 switch(event.getCode()){
+                    case UP: Game.upBtn = false;break;
                     case RIGHT: Game.rightBtn = false;break;
                     case LEFT: Game.leftBtn = false;break;
                     case DOWN: Game.downBtn = false;break;
@@ -182,8 +184,8 @@ public class inputManager extends Application
                             case ',':gHold.setFill(Color.WHITE);gHold.fillRect(x,y,BrushSize,BrushSize);break;
                             case 'I':gHold.setFill(Color.BLACK);gHold.fillRect(x,y,BrushSize,BrushSize);break;
                             case 'X':gHold.setFill(Color.BLACK);gHold.fillRect(x,y,BrushSize,BrushSize);break;
-                            case 'J':gHold.setFill(Color.ORANGE);gHold.fillRect(x,y,BrushSize,BrushSize);break;
-                            case 'L':gHold.setFill(Color.BLUE);gHold.fillRect(x,y,BrushSize,BrushSize);break;
+                            case 'J':gHold.setFill(Color.BLUE);gHold.fillRect(x,y,BrushSize,BrushSize);break;
+                            case 'L':gHold.setFill(Color.ORANGE);gHold.fillRect(x,y,BrushSize,BrushSize);break;
                             case 'O':gHold.setFill(Color.YELLOW);gHold.fillRect(x,y,BrushSize,BrushSize);break;
                             case 'T':gHold.setFill(Color.PURPLE);gHold.fillRect(x,y,BrushSize,BrushSize);break;
                             case 'Z':gHold.setFill(Color.RED);gHold.fillRect(x,y,BrushSize,BrushSize);break;
@@ -206,8 +208,8 @@ public class inputManager extends Application
                             case ',':g.setFill(Color.WHITE);g.fillRect(x,y,BrushSize,BrushSize);break;
                             case 'I':g.setFill(Color.BLACK);g.fillRect(x,y,BrushSize,BrushSize);break;
                             case 'X':g.setFill(Color.BLACK);g.fillRect(x,y,BrushSize,BrushSize);break;
-                            case 'J':g.setFill(Color.ORANGE);g.fillRect(x,y,BrushSize,BrushSize);break;
-                            case 'L':g.setFill(Color.BLUE);g.fillRect(x,y,BrushSize,BrushSize);break;
+                            case 'J':g.setFill(Color.BLUE);g.fillRect(x,y,BrushSize,BrushSize);break;
+                            case 'L':g.setFill(Color.ORANGE);g.fillRect(x,y,BrushSize,BrushSize);break;
                             case 'O':g.setFill(Color.YELLOW);g.fillRect(x,y,BrushSize,BrushSize);break;
                             case 'T':g.setFill(Color.PURPLE);g.fillRect(x,y,BrushSize,BrushSize);break;
                             case 'Z':g.setFill(Color.RED);g.fillRect(x,y,BrushSize,BrushSize);break;

@@ -5,10 +5,10 @@ import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 /**
- * Class containing game loop
+ * Class containing game loop and some logic
  *
  * @author Circle Onyx
- * @version 1.4
+ * @version 1.5
  */
 public class Game
 {
@@ -41,6 +41,7 @@ public class Game
     static long cycleTime;
     static long start;
 
+    static boolean upBtn = false;
     static boolean rightBtn = false;
     static boolean downBtn = false;
     static boolean leftBtn = false;
@@ -99,6 +100,15 @@ public class Game
                     if(leftBtn &&  (time.Timing > 10 || !held)){
                         MoveLeft(current[curIndex]);
                         held = true;
+                        time.Timing = 0;
+                    }
+                    if(upBtn && !held){
+                        held = true;
+                        start = System.currentTimeMillis();
+                        cycleTime = 0;
+                        while(current[curIndex] != null){
+                            if(!MoveDown(current[curIndex])){current[curIndex] = null;}
+                        }
                         time.Timing = 0;
                     }
                     if(downBtn){
@@ -189,21 +199,61 @@ public class Game
 
     public static boolean ROL(TetrisPiece t){
         t.ROL();
-        if(!playArea.IsValidMove(t,0,0)){
+        if(!kickChecker.check(t)){
             t.ROR();
             TetrisScore.tSpinBonus = false;
             return false;
+        }else if(t.TPiece){
+            int corners = 0;
+            Game.TSpinCheck1.x = t.x;
+            Game.TSpinCheck2.x = t.x;
+            Game.TSpinCheck3.x = t.x;
+            Game.TSpinCheck4.x = t.x;
+            Game.TSpinCheck1.y = t.y;
+            Game.TSpinCheck2.y = t.y;
+            Game.TSpinCheck3.y = t.y;
+            Game.TSpinCheck4.y = t.y;
+
+            corners += Game.playArea.IsValidMove(Game.TSpinCheck1,0,0) ? 0 : 1;
+            corners += Game.playArea.IsValidMove(Game.TSpinCheck2,0,0) ? 0 : 1;
+            corners += Game.playArea.IsValidMove(Game.TSpinCheck3,0,0) ? 0 : 1;
+            corners += Game.playArea.IsValidMove(Game.TSpinCheck4,0,0) ? 0 : 1;
+
+            if(corners > 2){
+                TetrisScore.tSpinBonus = true;
+            }else{TetrisScore.tSpinBonus = false;}
         }
+        else{TetrisScore.tSpinBonus = false;}
         return true;
     }
 
     public static boolean ROR(TetrisPiece t){
         t.ROR();
-        if(!playArea.IsValidMove(t,0,0)){
+        if(!kickChecker.check(t)){
             t.ROL();
             TetrisScore.tSpinBonus = false;
             return false;
+        }else if(t.TPiece){
+            int corners = 0;
+            Game.TSpinCheck1.x = t.x;
+            Game.TSpinCheck2.x = t.x;
+            Game.TSpinCheck3.x = t.x;
+            Game.TSpinCheck4.x = t.x;
+            Game.TSpinCheck1.y = t.y;
+            Game.TSpinCheck2.y = t.y;
+            Game.TSpinCheck3.y = t.y;
+            Game.TSpinCheck4.y = t.y;
+
+            corners += Game.playArea.IsValidMove(Game.TSpinCheck1,0,0) ? 0 : 1;
+            corners += Game.playArea.IsValidMove(Game.TSpinCheck2,0,0) ? 0 : 1;
+            corners += Game.playArea.IsValidMove(Game.TSpinCheck3,0,0) ? 0 : 1;
+            corners += Game.playArea.IsValidMove(Game.TSpinCheck4,0,0) ? 0 : 1;
+
+            if(corners > 2){
+                TetrisScore.tSpinBonus = true;
+            }else{TetrisScore.tSpinBonus = false;}
         }
+        else{TetrisScore.tSpinBonus = false;}
         return true;
     }
 
@@ -216,7 +266,8 @@ public class Game
             playArea.addHold(NEXT, holdPiece);
         }
         else if(playArea.IsValidMove(holdPiece,0,0)){
-            TetrisPiece temp = new TetrisPiece(current[curIndex].piece, current[curIndex].TPiece);
+            TetrisPiece temp = new TetrisPiece(current[curIndex].piece, current[curIndex].TPiece, current[curIndex].IPiece);
+            temp.currentOrient = current[curIndex].currentOrient;
             current[curIndex] = holdPiece;
             temp.x = TetrisCol/2;
             temp.y = 0;
@@ -234,7 +285,8 @@ public class Game
         if(next[0] == null){}
         else{
             for(int i = 0; i < current.length; i++){
-                current[i] = new TetrisPiece(next[i].piece, next[i].TPiece);
+                current[i] = new TetrisPiece(next[i].piece, next[i].TPiece, next[i].IPiece);
+                current[i].currentOrient = next[i].currentOrient;
                 current[i].x = TetrisCol/2;
                 current[i].y = 0;
             }
@@ -279,34 +331,38 @@ public class Game
         return playArea.nextOn;
     }
     static String[] T = {
-            "   ",
+            " T ",
             "TTT",
-            " T "};
+            "   "};
     static char[][] Tc = {
-            {' ', ' ', ' '},
+            {' ', 'T', ' '},
             {'T', 'T', 'T'},
-            {' ', 'T', ' '}};
+            {' ', ' ', ' '}};
     static String[] J = {
-            "   ",
             "J  ",
-            "JJJ"};
+            "JJJ",
+            "   "};
     static String[] L = {
-            "   ",
             "  L",
-            "LLL"};
+            "LLL", 
+            "   "};
     static String[] Z = {
-            "   ",
             "ZZ ",
-            " ZZ"};
+            " ZZ",
+            "   "};
     static String[] S = {
-            "   ",
             " SS",
-            "SS "};
+            "SS ",
+            "   "};
     static String[] I = {
             "    ",
             "IIII",
             "    ",
             "    "};
+    static char[][] Ic = {
+            {' ', ' ', ' ', ' '},
+            {'I', 'I', 'I', 'I'},
+            {' ', ' ', ' ', ' '}};
     static String[] O = {
             "OO",
             "OO"};
