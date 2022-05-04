@@ -1,10 +1,10 @@
-
+package application;
 /**
  * Checks the SRS movement using values from harddrop.com 
  * I piece SRS rotation is using normal values and not Akira.
  * 
  * @author Circle Onyx
- * @version 1.5
+ * @version 1.5.1
  */
 public class kickChecker
 {
@@ -27,6 +27,8 @@ public class kickChecker
     private static final int[][] ILEFTFLIPPED = {{0,0},{-2,0},{1,0},{-2,1},{1,-2}};
     private static final int[][] ILEFTNORMAL = {{0,0},{1,0},{-2,0},{1,2},{-2,-1}};
     private static final int[][] INORMALLEFT = {{0,0},{-1,0},{2,0},{-1,-2},{2,1}};
+    
+    public static boolean SRS = false;
 
     /**
      * required input is a tetris piece that is being rotated.
@@ -46,6 +48,7 @@ public class kickChecker
                 if(t.currentOrient == Orient.RIGHT){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,INORMALRIGHT[i][0],INORMALRIGHT[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= INORMALRIGHT[i][0];
                             t.y+= INORMALRIGHT[i][1];
                             return true;
@@ -54,6 +57,7 @@ public class kickChecker
                 }else if(t.currentOrient == Orient.LEFT){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,INORMALLEFT[i][0],INORMALLEFT[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= INORMALLEFT[i][0];
                             t.y+= INORMALLEFT[i][1];
                             return true;
@@ -67,6 +71,7 @@ public class kickChecker
                 if(t.currentOrient == Orient.NORMAL){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,IRIGHTNORMAL[i][0],IRIGHTNORMAL[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= IRIGHTNORMAL[i][0];
                             t.y+= IRIGHTNORMAL[i][1];
                             return true;
@@ -75,6 +80,7 @@ public class kickChecker
                 }else if(t.currentOrient == Orient.FLIPPED){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,IRIGHTFLIPPED[i][0],IRIGHTFLIPPED[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= IRIGHTFLIPPED[i][0];
                             t.y+= IRIGHTFLIPPED[i][1];
                             return true;
@@ -88,6 +94,7 @@ public class kickChecker
                 if(t.currentOrient == Orient.RIGHT){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,IFLIPPEDRIGHT[i][0],IFLIPPEDRIGHT[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= IFLIPPEDRIGHT[i][0];
                             t.y+= IFLIPPEDRIGHT[i][1];
                             return true;
@@ -109,6 +116,7 @@ public class kickChecker
                 if(t.currentOrient == Orient.FLIPPED){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,ILEFTFLIPPED[i][0],ILEFTFLIPPED[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= ILEFTFLIPPED[i][0];
                             t.y+= ILEFTFLIPPED[i][1];
                             return true;
@@ -117,6 +125,7 @@ public class kickChecker
                 }else if(t.currentOrient == Orient.NORMAL){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,ILEFTNORMAL[i][0],ILEFTNORMAL[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= ILEFTNORMAL[i][0];
                             t.y+= ILEFTNORMAL[i][1];
                             return true;
@@ -133,6 +142,7 @@ public class kickChecker
                 if(t.currentOrient == Orient.RIGHT){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,NORMALRIGHT[i][0],NORMALRIGHT[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= NORMALRIGHT[i][0];
                             t.y+= NORMALRIGHT[i][1];
                             return true;
@@ -141,6 +151,7 @@ public class kickChecker
                 }else if(t.currentOrient == Orient.LEFT){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,NORMALLEFT[i][0],NORMALLEFT[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= NORMALLEFT[i][0];
                             t.y+= NORMALLEFT[i][1];
                             return true;
@@ -162,6 +173,7 @@ public class kickChecker
                 }else if(t.currentOrient == Orient.FLIPPED){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,RIGHTFLIPPED[i][0],RIGHTFLIPPED[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= RIGHTFLIPPED[i][0];
                             t.y+= RIGHTFLIPPED[i][1];
                             return true;
@@ -175,6 +187,7 @@ public class kickChecker
                 if(t.currentOrient == Orient.RIGHT){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,FLIPPEDRIGHT[i][0],FLIPPEDRIGHT[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= FLIPPEDRIGHT[i][0];
                             t.y+= FLIPPEDRIGHT[i][1];
                             return true;
@@ -183,6 +196,7 @@ public class kickChecker
                 }else if(t.currentOrient == Orient.LEFT){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,FLIPPEDLEFT[i][0],FLIPPEDLEFT[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= FLIPPEDLEFT[i][0];
                             t.y+= FLIPPEDLEFT[i][1];
                             return true;
@@ -196,6 +210,7 @@ public class kickChecker
                 if(t.currentOrient == Orient.FLIPPED){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,LEFTFLIPPED[i][0],LEFTFLIPPED[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= LEFTFLIPPED[i][0];
                             t.y+= LEFTFLIPPED[i][1];
                             return true;
@@ -204,6 +219,7 @@ public class kickChecker
                 }else if(t.currentOrient == Orient.NORMAL){
                     for(int i = 0; i < 5; i++){
                         if(Game.playArea.IsValidMove(t,LEFTNORMAL[i][0],LEFTNORMAL[i][1])){
+                            if(i > 0){SRS = true;}else{SRS = false;}
                             t.x+= LEFTNORMAL[i][0];
                             t.y+= LEFTNORMAL[i][1];
                             return true;

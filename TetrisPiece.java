@@ -1,4 +1,4 @@
-
+package application;
 /**
  * contains the attributes of a tetris piece and its movement related methods
  * 
@@ -22,6 +22,7 @@ public class TetrisPiece
     char[][] piece;
     boolean TPiece = false;
     boolean IPiece = false;
+    
     int x, y;
     public TetrisPiece(String[] pieceLayout)
     {

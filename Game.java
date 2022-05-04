@@ -1,14 +1,13 @@
+package application;
 import java.util.Random;
 import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 /**
  * Class containing game loop and some logic
  *
  * @author Circle Onyx
- * @version 1.5
+ * @version 1.5.1
  */
 public class Game
 {
@@ -29,7 +28,7 @@ public class Game
             "XXXXXXXX"
         };
     static final int TetrisCol = 10;
-    static final int TetrisRow = 12;
+    static final int TetrisRow = 20;
     static final int NextCol = NEXT[0].length();
     static Insets TetrisBorder = new Insets(3);
 
@@ -40,6 +39,7 @@ public class Game
 
     static long cycleTime;
     static long start;
+    static int level;
 
     static boolean upBtn = false;
     static boolean rightBtn = false;
@@ -51,6 +51,13 @@ public class Game
     static boolean held = false;
     static BasicTimer time;
 
+    public static void Load(){
+        holdPiece = null;
+        curIndex = 0;
+        level = 1;
+        TetrisScore.resetScore();
+        playArea = new TetrisField(TetrisRow, TetrisCol, TetrisBorder, NEXT);        
+    }
     static Thread gameThread = new Thread(){
             public void run(){
                 while(playing){
@@ -76,7 +83,7 @@ public class Game
         holdPiece = null;
         boolean combo = false;
         curIndex = 0;
-        int level = 1;
+        level = 1;
         TetrisScore.resetScore();
         playArea = new TetrisField(TetrisRow, TetrisCol, TetrisBorder, NEXT);
         GenerateNext();
@@ -102,6 +109,18 @@ public class Game
                         held = true;
                         time.Timing = 0;
                     }
+                    if(rorBtn && !held){
+                        ROR(current[curIndex]);
+                        held = true;
+                    }
+                    if(rolBtn && !held){
+                        ROL(current[curIndex]);
+                        held = true;
+                    }
+                    if(holdBtn && !held){
+                        Hold();
+                        held = true;
+                    }
                     if(upBtn && !held){
                         held = true;
                         start = System.currentTimeMillis();
@@ -116,18 +135,6 @@ public class Game
                         cycleTime = 0;
                         if(!MoveDown(current[curIndex])){current[curIndex] = null;}
                         time.Timing = 0;
-                    }
-                    if(rorBtn && !held){
-                        ROR(current[curIndex]);
-                        held = true;
-                    }
-                    if(rolBtn && !held){
-                        ROL(current[curIndex]);
-                        held = true;
-                    }
-                    if(holdBtn && !held){
-                        Hold();
-                        held = true;
                     }
                 }
             }
@@ -202,6 +209,7 @@ public class Game
         if(!kickChecker.check(t)){
             t.ROR();
             TetrisScore.tSpinBonus = false;
+            TetrisScore.tMiniBonus = false;
             return false;
         }else if(t.TPiece){
             int corners = 0;
@@ -222,8 +230,11 @@ public class Game
             if(corners > 2){
                 TetrisScore.tSpinBonus = true;
             }else{TetrisScore.tSpinBonus = false;}
+            if(kickChecker.SRS){
+                TetrisScore.tMiniBonus = true;
+            }else{TetrisScore.tMiniBonus = false;}
         }
-        else{TetrisScore.tSpinBonus = false;}
+        else{TetrisScore.tSpinBonus = false; TetrisScore.tMiniBonus = false;}
         return true;
     }
 
@@ -232,6 +243,7 @@ public class Game
         if(!kickChecker.check(t)){
             t.ROL();
             TetrisScore.tSpinBonus = false;
+            TetrisScore.tMiniBonus = false;
             return false;
         }else if(t.TPiece){
             int corners = 0;
@@ -252,8 +264,11 @@ public class Game
             if(corners > 2){
                 TetrisScore.tSpinBonus = true;
             }else{TetrisScore.tSpinBonus = false;}
+            if(kickChecker.SRS){
+                TetrisScore.tMiniBonus = true;
+            }else{TetrisScore.tMiniBonus = false;}
         }
-        else{TetrisScore.tSpinBonus = false;}
+        else{TetrisScore.tSpinBonus = false; TetrisScore.tMiniBonus = false;}
         return true;
     }
 
@@ -325,6 +340,7 @@ public class Game
         int tCanHeight = 1+TetrisRow+TetrisBorder.getTop()+TetrisBorder.getBottom();
         return tCanHeight;
     }
+    
 
     public static boolean EditNext(){
         playArea.nextOn = !playArea.nextOn;

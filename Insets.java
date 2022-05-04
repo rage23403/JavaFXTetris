@@ -1,4 +1,4 @@
-
+package application;
 /**
  * Contains 4 private variables to help signify the border of something
  * inspired by JavaFX Insets

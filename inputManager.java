@@ -1,11 +1,9 @@
+package application;
+
 
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -18,7 +16,7 @@ import javafx.stage.Stage;
  * Contains all of the code for the UI, Painting and collecting the user's inputs.
  * 
  * @author Circle Onyx
- * @version 1.5
+ * @version 1.5.1
  */
 public class inputManager extends Application
 {
@@ -27,8 +25,8 @@ public class inputManager extends Application
     static int tCanWidth = BrushSize*(Game.getCol());
     static int tCanHeight = BrushSize*(Game.getRow());
 
-    public static Canvas tetrisCan = new Canvas(tCanWidthNext,tCanHeight);
-    public static Canvas HoldCan = new Canvas(8*BrushSize,tCanHeight);
+    public static Canvas tetrisCan;
+    public static Canvas HoldCan;
     public static GraphicsContext g;
     public static GraphicsContext gHold;
     public static Label currentScore;
@@ -40,10 +38,21 @@ public class inputManager extends Application
     public void start(Stage stage)
     {
         GridPane pane = new GridPane();
+        try{Game.Load();}catch(Exception e){
+            Canvas except = new Canvas(200,200);
+            GraphicsContext gexcept = except.getGraphicsContext2D();
+            gexcept.setFill(Color.BLACK);
+            gexcept.fillRect(0,0,200,200);
+            gexcept.setFill(Color.RED);
+            gexcept.fillText("LOADING ERROR",50,50);
+            pane.add(except,0,0);
+        }
         Scene scene = new Scene(pane, 600,400);
         stage.setTitle("INPUT READER");
         stage.setScene(scene);
         TetrisScore.loadScore();
+        HoldCan = new Canvas(8*BrushSize,tCanHeight);
+        tetrisCan = new Canvas(tCanWidthNext,tCanHeight);
         g = tetrisCan.getGraphicsContext2D();
         gHold = HoldCan.getGraphicsContext2D();
         currentScore = new Label("Current Score: " + TetrisScore.getCScore());
@@ -57,15 +66,15 @@ public class inputManager extends Application
         reset.setFocusTraversable(false);
         pause.setFocusTraversable(false);
         remNext.setFocusTraversable(false);
-        pane.add(currentScore,1,1);
-        pane.add(highScore,1,2);
-        pane.add(levelText,1,3);
-        pane.add(bonusText,1,4);
-        pane.add(HoldCan,0,0);
-        pane.add(tetrisCan,1,0);
-        pane.add(reset,2,0);
-        pane.add(pause,3,0);
-        pane.add(remNext,4,0);
+        pane.add(currentScore,2,2);
+        pane.add(highScore,2,3);
+        pane.add(levelText,2,4);
+        pane.add(bonusText,2,5);
+        pane.add(HoldCan,1,1);
+        pane.add(tetrisCan,2,1);
+        pane.add(reset,3,1);
+        pane.add(pause,4,1);
+        pane.add(remNext,5,1);
         Game.gameThread.start();
 
         scene.setOnKeyPressed(event -> {
@@ -78,6 +87,8 @@ public class inputManager extends Application
                     case Z: Game.rolBtn = true;break;
                     case ESCAPE: Pause(Game.paused);break;
                     case A: Game.holdBtn = true;break;
+				default:
+					break;
                 }
             });
         scene.setOnKeyReleased(event -> {
@@ -89,6 +100,8 @@ public class inputManager extends Application
                     case X: Game.rorBtn = false;break;
                     case Z: Game.rolBtn = false;break;
                     case A: Game.holdBtn = false;break;
+				default:
+					break;
                 } 
                 Game.held = false;
             });
@@ -122,7 +135,8 @@ public class inputManager extends Application
         stage.show();
     }
 
-    public static void Pause(boolean b){
+    @SuppressWarnings("removal")
+	public static void Pause(boolean b){
         if(!b){
             Game.paused = true;
             Game.gameThread.suspend();

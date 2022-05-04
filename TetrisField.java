@@ -1,5 +1,4 @@
-
-import java.util.Arrays;
+package application;
 /**
  * Class containing the Tetris Field with
  * Border size = border
@@ -8,7 +7,7 @@ import java.util.Arrays;
  * 
  * 
  * @author Circle Onyx
- * @version 1.5
+ * @version 1.5.1
  */
 public class TetrisField
 {
@@ -68,7 +67,7 @@ public class TetrisField
             field[i][field[0].length-1] = '\n';
         }
         for(int i = 0; i < field.length; i++){
-            for(int j = 0; j < field.length; j++){
+            for(int j = 0; j < field[0].length; j++){
                 clearedVer[i][j] = field[i][j];
             }
         }
@@ -128,7 +127,7 @@ public class TetrisField
     
     public boolean cleared(){
         for(int i = 0; i < field.length; i++){
-            for(int j = 0; j < field.length; j++){
+            for(int j = 0; j < field[i].length; j++){
                 if(clearedVer[i][j] != field[i][j]){return false;}
             }
         }

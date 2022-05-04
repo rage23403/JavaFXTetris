@@ -1,14 +1,13 @@
+package application;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 /**
  * Tracks the current score, high score, and whether there's a t-spin or not.
  * 
  * @author Circle Onyx
- * @version 1.5
+ * @version 1.5.1
  */
 public class TetrisScore
 {
@@ -16,6 +15,7 @@ public class TetrisScore
     private static int hScore = 10000;
     private static double comboBonus = 1.0;
     public static boolean tSpinBonus = false;
+    public static boolean tMiniBonus = false;
     public static boolean stored = false;
     public static boolean cleared = false;
     public static int scorePoints(int lines, int level, boolean combo){
@@ -38,22 +38,25 @@ public class TetrisScore
             level = 1;
         }
         temp += stored ? temp : 0;
-        temp *= level * (tSpinBonus ? 2 : 1)*(cleared ? 5 : 1);
+        temp *= level * (tSpinBonus ? 2 : 1)*(cleared ? 10 : 1)*(tMiniBonus ? 1.5 : 1);
         cScore += temp*comboBonus;
         checkHScore();
         if(combo){s += "\nCombo x" + (int)((comboBonus-1)*8);}
         if(cleared){s+= "\nPERFECT CLEAR";}
-        if(stored){s = "Back-to-back " + s;}
-        if(lines == 4 || tSpinBonus){stored = true;}
-        else{stored = false;}
-        if(tSpinBonus){ 
-            inputManager.SetBonusText("T Spin " + s);
+        if(tMiniBonus && lines == 1){
+            s = "T-Spin Mini " + s;
+            if(stored){s = "Back-to-back " + s;}
+            tMiniBonus = false;
+            stored = true;
+        }else if(tSpinBonus || (tMiniBonus && lines > 1)){ 
+            s = "T-Spin " + s;
+            if(stored){s = "Back-to-back " + s;}
             tSpinBonus = false;
             stored = true;
-        }
-        else{
-            inputManager.SetBonusText(s);
-        }
+        }else if(stored){s = "Back-to-back " + s;}
+        if(lines == 4 || tSpinBonus){stored = true;}
+        else{stored = false;}
+        inputManager.SetBonusText(s);
         inputManager.SetScoreText(Integer.toString(cScore));
         if(cScore/level > level*1000){level++;}
         cleared = false;
@@ -68,6 +71,11 @@ public class TetrisScore
 
     public static void resetScore(){
         cScore = 0;
+        comboBonus = 1.0;
+        tSpinBonus = false;
+        tMiniBonus = false;
+        stored = false;
+        cleared = false;
         inputManager.SetScoreText(Integer.toString(cScore));
     }
 
